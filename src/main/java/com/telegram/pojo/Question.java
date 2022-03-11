@@ -7,7 +7,10 @@ import lombok.Setter;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+
 
 @Entity
 @AllArgsConstructor
@@ -17,6 +20,7 @@ public class Question {
     @Getter
     @Setter
     @Column(name = "id", nullable = false)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     @Getter
@@ -27,4 +31,9 @@ public class Question {
     @Getter
     @Setter
     private float rate;
+
+    public Question(String text, float rate) {
+        this.text = text;
+        this.rate = rate;
+    }
 }
