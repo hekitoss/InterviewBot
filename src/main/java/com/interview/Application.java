@@ -1,4 +1,4 @@
-package com.telegram;
+package com.interview;
 
 import org.apache.log4j.Logger;
 import org.springframework.boot.SpringApplication;
