@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Service
 public class QuestionService {
@@ -21,15 +22,22 @@ public class QuestionService {
     }
 
     public List<Question> findAll() {
-        return questionRepository.findAll();
+        return questionRepository.findAll().stream().filter(q -> !q.isDeleted()).collect(Collectors.toList());
     }
 
-    public void save(Question question) {
+    @SneakyThrows
+    public Question delete(Long id){
+        return questionRepository.findById(id).stream().filter(q -> !q.isDeleted()).peek(e -> {
+            save(e.setDeleted(true));
+        }).findFirst().orElseThrow(() -> new Exception("No question with " + id));
+    }
+
+    public Question save(Question question) {
         if (Objects.isNull(question.getRate())){
             question.setRate(new Rate());
         }
         rateRepository.save(question.getRate());
-        questionRepository.save(question);
+        return questionRepository.save(question);
     }
 
     @SneakyThrows
@@ -40,7 +48,6 @@ public class QuestionService {
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
-
         }).findFirst().orElseThrow(() -> new Exception("No question with " + id));
 
 
