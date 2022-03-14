@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+    <changeSet author="vasil" id="1">
+        <sql>
+            CREATE SEQUENCE IF NOT EXISTS hibernate_sequence
+        </sql>
+    </changeSet>
+    <changeSet author="vasil" id="2">
+        <sql>
+            CREATE TABLE IF NOT EXISTS rate (
+                                                id BIGINT NOT NULL,
+                                                number_of_evaluations INT NOT NULL,
+                                                one INT NOT NULL,
+                                                two INT NOT NULL,
+                                                three INT NOT NULL,
+                                                four INT NOT NULL,
+                                                five INT NOT NULL,
+                                                PRIMARY KEY (id)
+                )
+        </sql>
+    </changeSet>
+    <changeSet author="vasil" id="3">
+        <sql>
+            CREATE TABLE IF NOT EXISTS question (
+                id BIGINT NOT NULL,
+                is_deleted BOOL NOT NULL,
+                text VARCHAR(255),
+                rate_id BIGINT,
+                PRIMARY KEY (id),
+                FOREIGN KEY (rate_id) REFERENCES rate(id)
+            )
+        </sql>
+    </changeSet>
+</databaseChangeLog>
