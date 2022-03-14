@@ -1,6 +1,7 @@
 package com.interview.dao;
 
 import lombok.Data;
+import lombok.SneakyThrows;
 import lombok.experimental.Accessors;
 
 import javax.persistence.Entity;
@@ -13,7 +14,7 @@ import javax.persistence.Id;
 @Data
 public class Rate {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
     private int one;
@@ -36,7 +37,8 @@ public class Rate {
         return (float) (one + two*2 + three*3 + four*4 + five*5) / numberOfEvaluations;
     }
 
-    public Rate evaluate(int rate) throws Exception {
+    @SneakyThrows
+    public Rate evaluate(int rate) {
         switch (rate) {
             case 1 -> {
                 one++;

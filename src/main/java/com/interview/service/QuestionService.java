@@ -42,14 +42,14 @@ public class QuestionService {
 
     @SneakyThrows
     public Question evaluate(Long id, int rate){
-        return questionRepository.findById(id).stream().filter(q -> !q.isDeleted()).peek(e -> {
-            try {
-                rateRepository.save(e.getRate().evaluate(rate));
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }
-        }).findFirst().orElseThrow(() -> new Exception("No question with " + id));
+        return questionRepository.findById(id).stream().filter(q -> !q.isDeleted()).peek(
+                e -> rateRepository.save(e.getRate().evaluate(rate)))
+                .findFirst().orElseThrow(() -> new Exception("No question with " + id));
+    }
 
-
+    @SneakyThrows
+    public Question findById(Long id){
+        return questionRepository.findById(id).stream().filter(q -> !q.isDeleted())
+                .findFirst().orElseThrow(() -> new Exception("No question with " + id));
     }
 }
