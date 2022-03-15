@@ -23,7 +23,7 @@
 
     <changeSet author="vasil" id="3">
         <sql>
-            CREATE TABLE IF NOT EXISTS question (
+            CREATE TABLE IF NOT EXISTS questionDao (
                 id BIGINT NOT NULL,
                 is_deleted BOOL NOT NULL,
                 text VARCHAR(255),
@@ -43,8 +43,8 @@
 
     <changeSet author="vasil" id="5">
         <sql>
-            INSERT INTO question
-            VALUES (1,false, 'first question', 1)
+            INSERT INTO questionDao
+            VALUES (1, false, 'first questionDao', 1)
         </sql>
     </changeSet>
 </databaseChangeLog>

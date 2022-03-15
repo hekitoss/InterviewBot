@@ -22,7 +22,7 @@ import java.util.Objects;
 @Accessors(chain = true)
 @Data
 @ToString
-public class Question {
+public class QuestionDao {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
@@ -38,7 +38,7 @@ public class Question {
     @NotNull
     private boolean isDeleted;
 
-    public Question(String text) {
+    public QuestionDao(String text) {
         this.text = text;
         this.isDeleted = false;
     }
@@ -47,8 +47,8 @@ public class Question {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        Question question = (Question) o;
-        return id != null && Objects.equals(id, question.id);
+        QuestionDao questionDao = (QuestionDao) o;
+        return id != null && Objects.equals(id, questionDao.id);
     }
 
     @Override

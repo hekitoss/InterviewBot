@@ -1,8 +1,8 @@
 package com.interview.service;
 
+import com.interview.dao.QuestionDao;
 import com.interview.dao.Rate;
 import com.interview.repository.QuestionRepository;
-import com.interview.dao.Question;
 import com.interview.repository.RateRepository;
 import lombok.SneakyThrows;
 import org.springframework.stereotype.Service;
@@ -21,34 +21,34 @@ public class QuestionService {
         this.rateRepository = rateRepository;
     }
 
-    public List<Question> findAll() {
+    public List<QuestionDao> findAll() {
         return questionRepository.findAll().stream().filter(q -> !q.isDeleted()).collect(Collectors.toList());
     }
 
     @SneakyThrows
-    public Question delete(Long id){
+    public QuestionDao delete(Long id){
         return questionRepository.findById(id).stream().filter(q -> !q.isDeleted()).peek(e -> {
             save(e.setDeleted(true));
         }).findFirst().orElseThrow(() -> new Exception("No question with " + id));
     }
 
-    public Question save(Question question) {
-        if (Objects.isNull(question.getRate())){
-            question.setRate(new Rate());
+    public QuestionDao save(QuestionDao questionDao) {
+        if (Objects.isNull(questionDao.getRate())){
+            questionDao.setRate(new Rate());
         }
-        rateRepository.save(question.getRate());
-        return questionRepository.save(question);
+        rateRepository.save(questionDao.getRate());
+        return questionRepository.save(questionDao);
     }
 
     @SneakyThrows
-    public Question evaluate(Long id, int rate){
+    public QuestionDao evaluate(Long id, int rate){
         return questionRepository.findById(id).stream().filter(q -> !q.isDeleted()).peek(
                 e -> rateRepository.save(e.getRate().evaluate(rate)))
                 .findFirst().orElseThrow(() -> new Exception("No question with " + id));
     }
 
     @SneakyThrows
-    public Question findById(Long id){
+    public QuestionDao findById(Long id){
         return questionRepository.findById(id).stream().filter(q -> !q.isDeleted())
                 .findFirst().orElseThrow(() -> new Exception("No question with " + id));
     }

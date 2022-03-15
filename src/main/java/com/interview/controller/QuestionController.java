@@ -1,6 +1,6 @@
 package com.interview.controller;
 
-import com.interview.dao.Question;
+import com.interview.dao.QuestionDao;
 import com.interview.service.QuestionService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,17 +24,17 @@ public class QuestionController {
 
     @PostMapping()
     public ResponseEntity<String> create(@RequestParam String text) {
-        questionService.save(new Question(text));
+        questionService.save(new QuestionDao(text));
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @GetMapping()
-    public ResponseEntity<List<Question>> getAll() {
+    public ResponseEntity<List<QuestionDao>> getAll() {
         return new ResponseEntity<>(questionService.findAll(), HttpStatus.OK);
     }
 
     @PostMapping("/{id}/rate")
-    public ResponseEntity<Question> rate(@PathVariable long id, @RequestParam int rate) {
+    public ResponseEntity<QuestionDao> rate(@PathVariable long id, @RequestParam int rate) {
         return new ResponseEntity<>(questionService.evaluate(id, rate), HttpStatus.OK);
     }
 }

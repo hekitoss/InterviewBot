@@ -1,6 +1,6 @@
 package com.interview.service;
 
-import com.interview.dao.Question;
+import com.interview.dao.QuestionDao;
 import com.interview.dao.Rate;
 import com.interview.repository.QuestionRepository;
 import com.interview.repository.RateRepository;
@@ -26,56 +26,56 @@ class QuestionServiceTest {
     @MockBean
     private RateRepository rateRepository;
 
-    private final Question question;
-    private final Question deletedQuestion;
+    private final QuestionDao questionDao;
+    private final QuestionDao deletedQuestionDao;
     private final Rate rate;
 
     @Autowired
-    QuestionService questionService;
+    private QuestionService questionService;
 
     {
-        question = new Question("text");
-        question.setId(1L);
+        questionDao = new QuestionDao("text");
+        questionDao.setId(1L);
         rate = new Rate();
-        question.setRate(rate);
-        deletedQuestion = new Question().setDeleted(true);
+        questionDao.setRate(rate);
+        deletedQuestionDao = new QuestionDao().setDeleted(true);
     }
 
    @Test
     void findAll() {
-        when(questionRepository.findAll()).thenReturn(List.of(question, deletedQuestion));
+        when(questionRepository.findAll()).thenReturn(List.of(questionDao, deletedQuestionDao));
 
-       List<Question> questions = questionService.findAll();
+       List<QuestionDao> questionDaos = questionService.findAll();
 
-       Assertions.assertTrue(questions.contains(question));
-       Assertions.assertFalse(questions.contains(deletedQuestion));
+       Assertions.assertTrue(questionDaos.contains(questionDao));
+       Assertions.assertFalse(questionDaos.contains(deletedQuestionDao));
     }
 
     @Test
     void delete() {
-        when(questionRepository.findById(1L)).thenReturn(Optional.of(question));
+        when(questionRepository.findById(1L)).thenReturn(Optional.of(questionDao));
 
         questionService.delete(1L);
 
-        Assertions.assertTrue(question.isDeleted());
+        Assertions.assertTrue(questionDao.isDeleted());
     }
 
     @Test
     void save() {
-        questionService.save(question);
+        questionService.save(questionDao);
 
-        verify(questionRepository).save(question);
+        verify(questionRepository).save(questionDao);
         verify(rateRepository).save(rate);
     }
 
     @Test
     void evaluate() {
-        when(questionRepository.findById(1L)).thenReturn(Optional.of(question));
+        when(questionRepository.findById(1L)).thenReturn(Optional.of(questionDao));
 
         questionService.evaluate(1L, 2);
 
-        Assertions.assertEquals(1, question.getRate().getTwo());
-        Assertions.assertEquals(1, question.getRate().getNumberOfEvaluations());
+        Assertions.assertEquals(1, questionDao.getRate().getTwo());
+        Assertions.assertEquals(1, questionDao.getRate().getNumberOfEvaluations());
         verify(rateRepository).save(rate);
     }
 }

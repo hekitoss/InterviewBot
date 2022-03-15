@@ -33,7 +33,7 @@ public class Rate {
         this.numberOfEvaluations = 0;
     }
 
-    public float getRate(){
+    public float getAverageRate(){
         return (float) (one + two*2 + three*3 + four*4 + five*5) / numberOfEvaluations;
     }
 
