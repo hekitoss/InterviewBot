@@ -21,15 +21,15 @@ public class QuestionMapperTest {
     private QuestionMapper questionMapper;
 
     {
-        Rate rate = new Rate()
-                .setId(1L)
-                .setFive(1)
-                .setThree(1)
-                .setNumberOfEvaluations(2);
         questionDao = new QuestionDao()
                 .setText("text")
                 .setId(1L)
-                .setRate(rate);
+                .setRate(new Rate()
+                        .setId(1L)
+                        .setFive(1)
+                        .setThree(1)
+                        .setNumberOfEvaluations(2)
+                );
     }
 
     @Test

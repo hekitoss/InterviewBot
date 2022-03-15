@@ -121,7 +121,6 @@
             <artifactId>liquibase-maven-plugin</artifactId>
             <version>4.8.0</version>
         </dependency>
-
     </dependencies>
 
     <build>
@@ -132,7 +131,7 @@
                 <version>3.4.1</version>
                 <configuration>
                     <propertyFile>src/main/resources/liquibase.properties</propertyFile>
-                    <changeLogFile>src/main/resources/liquibase-outputChangeLog.xml</changeLogFile>
+                    <changeLogFile>src/main/liquibase/root-changeLog.xml</changeLogFile>
                 </configuration>
             </plugin>
         </plugins>

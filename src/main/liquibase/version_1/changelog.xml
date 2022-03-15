@@ -17,7 +17,7 @@
                 four INT NOT NULL,
                 five INT NOT NULL,
                 PRIMARY KEY (id)
-            )
+                )
         </sql>
     </changeSet>
 
@@ -30,7 +30,7 @@
                 rate_id BIGINT,
                 PRIMARY KEY (id),
                 FOREIGN KEY (rate_id) REFERENCES rate(id)
-            )
+                )
         </sql>
     </changeSet>
 
