@@ -1,9 +1,12 @@
 package com.interview.controller;
 
 import com.interview.dao.QuestionDao;
+import com.interview.dto.QuestionDto;
+import com.interview.exception.NotFoundException;
 import com.interview.service.QuestionService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -28,12 +31,17 @@ public class QuestionController {
     }
 
     @GetMapping()
-    public ResponseEntity<List<QuestionDao>> getAll() {
+    public ResponseEntity<List<QuestionDto>> getAll() {
         return new ResponseEntity<>(questionService.findAll(), HttpStatus.OK);
     }
 
     @PostMapping("/{id}/rate")
-    public ResponseEntity<QuestionDao> rate(@PathVariable long id, @RequestParam int rate) {
+    public ResponseEntity<QuestionDao> rate(@PathVariable long id, @RequestParam int rate) throws NotFoundException {
         return new ResponseEntity<>(questionService.evaluate(id, rate), HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<QuestionDao> delete(@PathVariable long id) throws NotFoundException {
+        return new ResponseEntity<>(questionService.delete(id), HttpStatus.OK);
     }
 }

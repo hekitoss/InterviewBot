@@ -2,8 +2,11 @@ package com.interview.service;
 
 import com.interview.dao.QuestionDao;
 import com.interview.dao.Rate;
+import com.interview.dto.QuestionDto;
+import com.interview.mapper.QuestionMapper;
 import com.interview.repository.QuestionRepository;
 import com.interview.repository.RateRepository;
+import lombok.SneakyThrows;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -25,6 +28,8 @@ class QuestionServiceTest {
     private QuestionRepository questionRepository;
     @MockBean
     private RateRepository rateRepository;
+    @MockBean
+    private QuestionMapper questionMapper;
 
     private final QuestionDao questionDao;
     private final QuestionDao deletedQuestionDao;
@@ -43,14 +48,19 @@ class QuestionServiceTest {
 
    @Test
     void findAll() {
+       QuestionDto questionDto = new QuestionDto().setId(1L);
+       QuestionDto deletedQuestionDto = new QuestionDto().setId(2L);
         when(questionRepository.findAll()).thenReturn(List.of(questionDao, deletedQuestionDao));
+        when(questionMapper.convertToDto(questionDao)).thenReturn(questionDto);
+        when(questionMapper.convertToDto(deletedQuestionDao)).thenReturn(deletedQuestionDto);
 
-       List<QuestionDao> questionDaos = questionService.findAll();
+       List<QuestionDto> questionDtos = questionService.findAll();
 
-       Assertions.assertTrue(questionDaos.contains(questionDao));
-       Assertions.assertFalse(questionDaos.contains(deletedQuestionDao));
+       Assertions.assertTrue(questionDtos.contains(questionDto));
+       Assertions.assertFalse(questionDtos.contains(deletedQuestionDto));
     }
 
+    @SneakyThrows
     @Test
     void delete() {
         when(questionRepository.findById(1L)).thenReturn(Optional.of(questionDao));
@@ -68,6 +78,7 @@ class QuestionServiceTest {
         verify(rateRepository).save(rate);
     }
 
+    @SneakyThrows
     @Test
     void evaluate() {
         when(questionRepository.findById(1L)).thenReturn(Optional.of(questionDao));
