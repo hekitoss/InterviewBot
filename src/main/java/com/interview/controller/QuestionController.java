@@ -23,9 +23,8 @@ public class QuestionController {
     }
 
     @PostMapping()
-    public ResponseEntity<String> create(@RequestParam String text) {
-        questionService.save(new QuestionDao(text));
-        return new ResponseEntity<>(HttpStatus.OK);
+    public ResponseEntity<QuestionDao> create(@RequestParam String text, @RequestParam String answer) {
+        return new ResponseEntity<>(questionService.save(new QuestionDao(text, answer)), HttpStatus.OK);
     }
 
     @GetMapping()

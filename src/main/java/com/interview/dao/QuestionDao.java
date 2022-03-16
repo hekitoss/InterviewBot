@@ -14,6 +14,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
+import java.time.OffsetDateTime;
 import java.util.Objects;
 
 
@@ -28,18 +29,24 @@ public class QuestionDao {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
-    @NotNull
-    private String text;
-
     @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "rate_id")
     private Rate rate;
 
     @NotNull
+    private String text;
+    @NotNull
+    private String answer;
+    @NotNull
     private boolean isDeleted;
+    @NotNull
+    private OffsetDateTime creationTime;
+    private OffsetDateTime deletingTime;
 
-    public QuestionDao(String text) {
+    public QuestionDao(String text, String answer) {
         this.text = text;
+        this.answer = answer;
+        creationTime = OffsetDateTime.now();
         this.isDeleted = false;
     }
 

@@ -7,6 +7,7 @@ import com.interview.repository.RateRepository;
 import lombok.SneakyThrows;
 import org.springframework.stereotype.Service;
 
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -28,7 +29,8 @@ public class QuestionService {
     @SneakyThrows
     public QuestionDao delete(Long id){
         return questionRepository.findById(id).stream().filter(q -> !q.isDeleted()).peek(e -> {
-            save(e.setDeleted(true));
+            save(e.setDeleted(true)
+                    .setDeletingTime(OffsetDateTime.now()));
         }).findFirst().orElseThrow(() -> new Exception("No question with " + id));
     }
 

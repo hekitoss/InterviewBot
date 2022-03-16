@@ -34,7 +34,7 @@ class QuestionServiceTest {
     private QuestionService questionService;
 
     {
-        questionDao = new QuestionDao("text");
+        questionDao = new QuestionDao("text", "answer");
         questionDao.setId(1L);
         rate = new Rate();
         questionDao.setRate(rate);

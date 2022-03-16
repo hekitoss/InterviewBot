@@ -23,6 +23,7 @@ public class QuestionMapperTest {
     {
         questionDao = new QuestionDao()
                 .setText("text")
+                .setAnswer("answer")
                 .setId(1L)
                 .setRate(new Rate()
                         .setId(1L)
