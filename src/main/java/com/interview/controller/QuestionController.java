@@ -37,11 +37,11 @@ public class QuestionController {
 
     @PostMapping("/{id}/rate")
     public ResponseEntity<QuestionDao> rate(@PathVariable long id, @RequestParam int rate) throws NotFoundException {
-        return new ResponseEntity<>(questionService.evaluate(id, rate), HttpStatus.OK);
+        return new ResponseEntity<>(questionService.evaluateById(id, rate), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<QuestionDao> delete(@PathVariable long id) throws NotFoundException {
-        return new ResponseEntity<>(questionService.delete(id), HttpStatus.OK);
+        return new ResponseEntity<>(questionService.deleteById(id), HttpStatus.OK);
     }
 }

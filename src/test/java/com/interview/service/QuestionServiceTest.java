@@ -65,7 +65,7 @@ public class QuestionServiceTest {
     public void deleteMethodCheck() {
         when(questionRepository.findById(1L)).thenReturn(Optional.of(questionDao));
 
-        questionService.delete(1L);
+        questionService.deleteById(1L);
 
         assertTrue(questionDao.isDeleted());
     }
@@ -83,7 +83,7 @@ public class QuestionServiceTest {
     public void evaluateMethodCheck() {
         when(questionRepository.findById(1L)).thenReturn(Optional.of(questionDao));
 
-        questionService.evaluate(1L, 2);
+        questionService.evaluateById(1L, 2);
 
         assertEquals(1, questionDao.getRate().getTwo());
         assertEquals(1, questionDao.getRate().getNumberOfEvaluations());

@@ -9,6 +9,8 @@ import com.interview.repository.QuestionRepository;
 import com.interview.repository.RateRepository;
 import com.interview.validation.QuestionValidator;
 import com.interview.validation.RateValidator;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
 
 import java.time.OffsetDateTime;
@@ -24,6 +26,8 @@ public class QuestionService {
     private final RateValidator rateValidator;
     private final QuestionValidator questionValidator;
 
+    private static final Logger log = LogManager.getRootLogger();
+
     public QuestionService(QuestionRepository questionRepository, RateRepository rateRepository, QuestionMapper questionMapper, RateValidator rateValidator, QuestionValidator questionValidator) {
         this.questionRepository = questionRepository;
         this.rateRepository = rateRepository;
@@ -33,13 +37,15 @@ public class QuestionService {
     }
 
     public List<QuestionDto> findAll() {
+        log.debug("find all method");
         return questionRepository.findAll().stream()
                 .filter(q -> !q.isDeleted())
                 .map(questionMapper::convertToDto)
                 .collect(Collectors.toList());
     }
 
-    public QuestionDao delete(Long id) throws NotFoundException {
+    public QuestionDao deleteById(Long id) throws NotFoundException {
+        log.debug("delete by id method, with id: " + id);
         return questionRepository.findById(id).stream()
                 .filter(q -> !q.isDeleted())
                 .peek(e -> {save(e.setDeleted(true)
@@ -49,6 +55,7 @@ public class QuestionService {
     }
 
     public QuestionDao save(QuestionDao questionDao) {
+        log.debug("save method");
         if (Objects.isNull(questionDao.getRate())){
             questionDao.setRate(new Rate());
         }
@@ -58,7 +65,8 @@ public class QuestionService {
         return questionRepository.save(questionDao);
     }
 
-    public QuestionDao evaluate(Long id, int rate) throws NotFoundException {
+    public QuestionDao evaluateById(Long id, int rate) throws NotFoundException {
+        log.debug("evaluate by id method, with id: " + id);
         return questionRepository.findById(id).stream()
                 .filter(q -> !q.isDeleted())
                 .peek(q -> rateValidator.validate(q.getRate()))
@@ -68,6 +76,7 @@ public class QuestionService {
     }
 
     public QuestionDao findById(Long id) throws NotFoundException {
+        log.debug("find by id method, with id: " + id);
         return questionRepository.findById(id).stream()
                 .filter(q -> !q.isDeleted())
                 .findFirst()
