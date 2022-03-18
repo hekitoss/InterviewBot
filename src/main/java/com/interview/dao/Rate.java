@@ -8,6 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.xml.bind.ValidationException;
 
 @Entity
 @Accessors(chain = true)
@@ -60,7 +61,7 @@ public class Rate {
                 five++;
                 numberOfEvaluations++;
             }
-            default -> throw new Exception("not correct rating");
+            default -> throw new ValidationException("not correct rating");
         }
         return this;
     }

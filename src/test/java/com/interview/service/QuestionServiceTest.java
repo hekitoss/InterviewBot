@@ -7,8 +7,7 @@ import com.interview.mapper.QuestionMapper;
 import com.interview.repository.QuestionRepository;
 import com.interview.repository.RateRepository;
 import lombok.SneakyThrows;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -18,12 +17,13 @@ import org.springframework.test.context.junit4.SpringRunner;
 import java.util.List;
 import java.util.Optional;
 
+import static junit.framework.TestCase.*;
 import static org.mockito.Mockito.*;
 
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-class QuestionServiceTest {
+public class QuestionServiceTest {
     @MockBean
     private QuestionRepository questionRepository;
     @MockBean
@@ -47,7 +47,7 @@ class QuestionServiceTest {
     }
 
    @Test
-    void findAll() {
+   public void findAllMethodCheck() {
        QuestionDto questionDto = new QuestionDto().setId(1L);
        QuestionDto deletedQuestionDto = new QuestionDto().setId(2L);
         when(questionRepository.findAll()).thenReturn(List.of(questionDao, deletedQuestionDao));
@@ -56,22 +56,22 @@ class QuestionServiceTest {
 
        List<QuestionDto> questionDtos = questionService.findAll();
 
-       Assertions.assertTrue(questionDtos.contains(questionDto));
-       Assertions.assertFalse(questionDtos.contains(deletedQuestionDto));
+       assertTrue(questionDtos.contains(questionDto));
+       assertFalse(questionDtos.contains(deletedQuestionDto));
     }
 
     @SneakyThrows
     @Test
-    void delete() {
+    public void deleteMethodCheck() {
         when(questionRepository.findById(1L)).thenReturn(Optional.of(questionDao));
 
         questionService.delete(1L);
 
-        Assertions.assertTrue(questionDao.isDeleted());
+        assertTrue(questionDao.isDeleted());
     }
 
     @Test
-    void save() {
+    public void saveMethodCheck() {
         questionService.save(questionDao);
 
         verify(questionRepository).save(questionDao);
@@ -80,13 +80,13 @@ class QuestionServiceTest {
 
     @SneakyThrows
     @Test
-    void evaluate() {
+    public void evaluateMethodCheck() {
         when(questionRepository.findById(1L)).thenReturn(Optional.of(questionDao));
 
         questionService.evaluate(1L, 2);
 
-        Assertions.assertEquals(1, questionDao.getRate().getTwo());
-        Assertions.assertEquals(1, questionDao.getRate().getNumberOfEvaluations());
+        assertEquals(1, questionDao.getRate().getTwo());
+        assertEquals(1, questionDao.getRate().getNumberOfEvaluations());
         verify(rateRepository).save(rate);
     }
 }
