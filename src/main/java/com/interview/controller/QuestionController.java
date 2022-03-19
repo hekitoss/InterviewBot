@@ -4,6 +4,7 @@ import com.interview.dao.QuestionDao;
 import com.interview.dto.QuestionDto;
 import com.interview.exception.NotFoundException;
 import com.interview.service.QuestionService;
+import com.interview.service.TranslateService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -20,9 +21,11 @@ import java.util.List;
 @RequestMapping("/questions")
 public class QuestionController {
     private final QuestionService questionService;
+    private final TranslateService translateService;
 
-    public QuestionController(QuestionService questionService) {
+    public QuestionController(QuestionService questionService, TranslateService translateService) {
         this.questionService = questionService;
+        this.translateService = translateService;
     }
 
     @PostMapping()
@@ -43,5 +46,10 @@ public class QuestionController {
     @DeleteMapping("/{id}")
     public ResponseEntity<QuestionDao> delete(@PathVariable long id) throws NotFoundException {
         return new ResponseEntity<>(questionService.deleteById(id), HttpStatus.OK);
+    }
+
+    @PostMapping("/translate")
+    public ResponseEntity<String> translate(@RequestParam String text) {
+        return new ResponseEntity<>(translateService.translate(text), HttpStatus.OK);
     }
 }
