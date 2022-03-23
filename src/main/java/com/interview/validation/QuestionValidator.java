@@ -1,6 +1,6 @@
 package com.interview.validation;
 
-import com.interview.dao.QuestionDao;
+import com.interview.dao.Question;
 import lombok.SneakyThrows;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -15,7 +15,7 @@ public class QuestionValidator {
     private static final Logger log = LogManager.getRootLogger();
 
     @SneakyThrows
-    public void validate(QuestionDao question){
+    public void validate(Question question){
         if(question.getText().length() > 255
                 ||question.getAnswer().length() > 255
                 ||question.getCreationTime().isAfter(OffsetDateTime.now())) {

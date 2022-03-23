@@ -23,7 +23,7 @@ import java.util.Objects;
 @Accessors(chain = true)
 @Data
 @ToString
-public class QuestionDao {
+public class Question {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
@@ -43,7 +43,11 @@ public class QuestionDao {
     private OffsetDateTime creationTime;
     private OffsetDateTime deletingTime;
 
-    public QuestionDao(String text, String answer) {
+    @OneToOne
+    @JoinColumn(name = "owner_id")
+    private User owner;
+
+    public Question(String text, String answer) {
         this.text = text;
         this.answer = answer;
         creationTime = OffsetDateTime.now();
@@ -54,8 +58,8 @@ public class QuestionDao {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        QuestionDao questionDao = (QuestionDao) o;
-        return id != null && Objects.equals(id, questionDao.id);
+        Question question = (Question) o;
+        return id != null && Objects.equals(id, question.id);
     }
 
     @Override

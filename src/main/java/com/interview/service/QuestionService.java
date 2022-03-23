@@ -1,6 +1,6 @@
 package com.interview.service;
 
-import com.interview.dao.QuestionDao;
+import com.interview.dao.Question;
 import com.interview.dao.Rate;
 import com.interview.dto.QuestionDto;
 import com.interview.exception.NotFoundException;
@@ -44,7 +44,7 @@ public class QuestionService {
                 .collect(Collectors.toList());
     }
 
-    public QuestionDao deleteById(Long id) throws NotFoundException {
+    public Question deleteById(Long id) throws NotFoundException {
         log.debug("delete by id method, with id: " + id);
         return questionRepository.findById(id).stream()
                 .filter(q -> !q.isDeleted())
@@ -54,18 +54,18 @@ public class QuestionService {
                 .orElseThrow(() -> new NotFoundException("No question with id:" + id));
     }
 
-    public QuestionDao save(QuestionDao questionDao) {
+    public Question save(Question question) {
         log.debug("save method");
-        if (Objects.isNull(questionDao.getRate())){
-            questionDao.setRate(new Rate());
+        if (Objects.isNull(question.getRate())){
+            question.setRate(new Rate());
         }
-        rateValidator.validate(questionDao.getRate());
-        questionValidator.validate(questionDao);
-        rateRepository.save(questionDao.getRate());
-        return questionRepository.save(questionDao);
+        rateValidator.validate(question.getRate());
+        questionValidator.validate(question);
+        rateRepository.save(question.getRate());
+        return questionRepository.save(question);
     }
 
-    public QuestionDao evaluateById(Long id, int rate) throws NotFoundException {
+    public Question evaluateById(Long id, int rate) throws NotFoundException {
         log.debug("evaluate by id method, with id: " + id);
         return questionRepository.findById(id).stream()
                 .filter(q -> !q.isDeleted())
@@ -75,7 +75,7 @@ public class QuestionService {
                 .orElseThrow(() -> new NotFoundException("No question with id:" + id));
     }
 
-    public QuestionDao findById(Long id) throws NotFoundException {
+    public Question findById(Long id) throws NotFoundException {
         log.debug("find by id method, with id: " + id);
         return questionRepository.findById(id).stream()
                 .filter(q -> !q.isDeleted())

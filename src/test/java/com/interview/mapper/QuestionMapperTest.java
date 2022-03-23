@@ -1,6 +1,6 @@
 package com.interview.mapper;
 
-import com.interview.dao.QuestionDao;
+import com.interview.dao.Question;
 import com.interview.dao.Rate;
 import com.interview.dto.QuestionDto;
 import org.junit.Test;
@@ -15,13 +15,13 @@ import static junit.framework.TestCase.assertEquals;
 @SpringBootTest
 public class QuestionMapperTest {
 
-    private final QuestionDao questionDao;
+    private final Question question;
 
     @Autowired
     private QuestionMapper questionMapper;
 
     {
-        questionDao = new QuestionDao()
+        question = new Question()
                 .setText("text")
                 .setAnswer("answer")
                 .setId(1L)
@@ -35,11 +35,11 @@ public class QuestionMapperTest {
 
     @Test
     public void convertToDto(){
-        QuestionDto questionDto = questionMapper.convertToDto(questionDao);
+        QuestionDto questionDto = questionMapper.convertToDto(question);
 
-        assertEquals(questionDao.getId(), questionDto.getId());
-        assertEquals(questionDao.getText(), questionDto.getText());
-        assertEquals(questionDao.getRate().getAverageRate(), questionDto.getRate());
+        assertEquals(question.getId(), questionDto.getId());
+        assertEquals(question.getText(), questionDto.getText());
+        assertEquals(question.getRate().getAverageRate(), questionDto.getRate());
     }
 
 }

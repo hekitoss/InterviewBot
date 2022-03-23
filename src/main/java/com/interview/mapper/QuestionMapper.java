@@ -1,6 +1,6 @@
 package com.interview.mapper;
 
-import com.interview.dao.QuestionDao;
+import com.interview.dao.Question;
 import com.interview.dto.QuestionDto;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
@@ -11,11 +11,11 @@ public class QuestionMapper {
 
     public QuestionMapper() {
         this.modelMapper = new ModelMapper();
-        modelMapper.createTypeMap(QuestionDao.class, QuestionDto.class)
+        modelMapper.createTypeMap(Question.class, QuestionDto.class)
                 .addMapping(question -> question.getRate().getAverageRate(), QuestionDto::setRate);
     }
 
-    public QuestionDto convertToDto(QuestionDao questionDao){
-        return modelMapper.map(questionDao, QuestionDto.class);
+    public QuestionDto convertToDto(Question question){
+        return modelMapper.map(question, QuestionDto.class);
     }
 }

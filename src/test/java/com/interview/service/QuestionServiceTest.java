@@ -1,6 +1,6 @@
 package com.interview.service;
 
-import com.interview.dao.QuestionDao;
+import com.interview.dao.Question;
 import com.interview.dao.Rate;
 import com.interview.dto.QuestionDto;
 import com.interview.mapper.QuestionMapper;
@@ -31,28 +31,28 @@ public class QuestionServiceTest {
     @MockBean
     private QuestionMapper questionMapper;
 
-    private final QuestionDao questionDao;
-    private final QuestionDao deletedQuestionDao;
+    private final Question question;
+    private final Question deletedQuestion;
     private final Rate rate;
 
     @Autowired
     private QuestionService questionService;
 
     {
-        questionDao = new QuestionDao("text", "answer");
-        questionDao.setId(1L);
+        question = new Question("text", "answer");
+        question.setId(1L);
         rate = new Rate();
-        questionDao.setRate(rate);
-        deletedQuestionDao = new QuestionDao().setDeleted(true);
+        question.setRate(rate);
+        deletedQuestion = new Question().setDeleted(true);
     }
 
    @Test
    public void findAllMethodCheck() {
        QuestionDto questionDto = new QuestionDto().setId(1L);
        QuestionDto deletedQuestionDto = new QuestionDto().setId(2L);
-        when(questionRepository.findAll()).thenReturn(List.of(questionDao, deletedQuestionDao));
-        when(questionMapper.convertToDto(questionDao)).thenReturn(questionDto);
-        when(questionMapper.convertToDto(deletedQuestionDao)).thenReturn(deletedQuestionDto);
+        when(questionRepository.findAll()).thenReturn(List.of(question, deletedQuestion));
+        when(questionMapper.convertToDto(question)).thenReturn(questionDto);
+        when(questionMapper.convertToDto(deletedQuestion)).thenReturn(deletedQuestionDto);
 
        List<QuestionDto> questionDtos = questionService.findAll();
 
@@ -63,30 +63,30 @@ public class QuestionServiceTest {
     @SneakyThrows
     @Test
     public void deleteMethodCheck() {
-        when(questionRepository.findById(1L)).thenReturn(Optional.of(questionDao));
+        when(questionRepository.findById(1L)).thenReturn(Optional.of(question));
 
         questionService.deleteById(1L);
 
-        assertTrue(questionDao.isDeleted());
+        assertTrue(question.isDeleted());
     }
 
     @Test
     public void saveMethodCheck() {
-        questionService.save(questionDao);
+        questionService.save(question);
 
-        verify(questionRepository).save(questionDao);
+        verify(questionRepository).save(question);
         verify(rateRepository).save(rate);
     }
 
     @SneakyThrows
     @Test
     public void evaluateMethodCheck() {
-        when(questionRepository.findById(1L)).thenReturn(Optional.of(questionDao));
+        when(questionRepository.findById(1L)).thenReturn(Optional.of(question));
 
         questionService.evaluateById(1L, 2);
 
-        assertEquals(1, questionDao.getRate().getTwo());
-        assertEquals(1, questionDao.getRate().getNumberOfEvaluations());
+        assertEquals(1, question.getRate().getTwo());
+        assertEquals(1, question.getRate().getNumberOfEvaluations());
         verify(rateRepository).save(rate);
     }
 }

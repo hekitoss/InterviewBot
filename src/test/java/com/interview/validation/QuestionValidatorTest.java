@@ -1,6 +1,6 @@
 package com.interview.validation;
 
-import com.interview.dao.QuestionDao;
+import com.interview.dao.Question;
 import com.interview.dao.Rate;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -17,13 +17,13 @@ import static org.junit.Assert.assertThrows;
 @SpringBootTest
 public class QuestionValidatorTest {
 
-    private final QuestionDao validQuestionDao;
+    private final Question validQuestion;
 
     @Autowired
     QuestionValidator questionValidator;
 
     {
-        validQuestionDao = new QuestionDao()
+        validQuestion = new Question()
                 .setText("text")
                 .setAnswer("answer")
                 .setId(1L)
@@ -38,9 +38,9 @@ public class QuestionValidatorTest {
 
     @Test
     public void validateNotValidQuest(){
-        validQuestionDao.setCreationTime(OffsetDateTime.now().plusDays(1));
+        validQuestion.setCreationTime(OffsetDateTime.now().plusDays(1));
 
         assertThrows(ValidationException.class,
-                () -> questionValidator.validate(validQuestionDao));
+                () -> questionValidator.validate(validQuestion));
     }
 }

@@ -8,6 +8,23 @@
 
     <changeSet author="vasil" id="2">
         <sql>
+            CREATE TABLE IF NOT EXISTS users (
+                id BIGINT NOT NULL,
+                password VARCHAR(255) NOT NULL,
+                username VARCHAR(20) NOT NULL,
+                name VARCHAR(10) NOT NULL,
+                surname VARCHAR(10) NOT NULL,
+                role VARCHAR(10) NOT NULL,
+                is_deleted BOOL NOT NULL,
+                creation_time TIMESTAMP NOT NULL,
+                deleting_time TIMESTAMP,
+                PRIMARY KEY (id)
+                )
+        </sql>
+    </changeSet>
+
+    <changeSet author="vasil" id="3">
+        <sql>
             CREATE TABLE IF NOT EXISTS rate (
                 id BIGINT NOT NULL,
                 number_of_evaluations INT NOT NULL,
@@ -21,35 +38,22 @@
         </sql>
     </changeSet>
 
-    <changeSet author="vasil" id="3">
+    <changeSet author="vasil" id="4">
         <sql>
-            CREATE TABLE IF NOT EXISTS question_dao (
+            CREATE TABLE IF NOT EXISTS question (
                 id BIGINT NOT NULL,
                 is_deleted BOOL NOT NULL,
                 text VARCHAR(255) NOT NULL,
                 answer VARCHAR(255) NOT NULL,
                 rate_id BIGINT,
+                creator_id BIGINT,
                 creation_time TIMESTAMP NOT NULL,
                 deleting_time TIMESTAMP,
                 PRIMARY KEY (id),
-                FOREIGN KEY (rate_id) REFERENCES rate(id)
+                FOREIGN KEY (rate_id) REFERENCES rate(id),
+                FOREIGN KEY (creator_id) REFERENCES users(id)
                 )
         </sql>
     </changeSet>
 
-    <changeSet author="vasil" id="4">
-        <sql>
-            INSERT INTO rate
-            VALUES (1, 3, 1, 0, 1, 0, 1)
-            ON CONFLICT DO NOTHING
-        </sql>
-    </changeSet>
-
-    <changeSet author="vasil" id="5">
-        <sql>
-            INSERT INTO question_dao
-            VALUES (1, false, 'first question', 'first answer', 1, '2020-12-12 11:30:30.12345')
-            ON CONFLICT DO NOTHING
-        </sql>
-    </changeSet>
 </databaseChangeLog>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+    <changeSet author="vasil" id="5">
+        <sql>
+            INSERT INTO users
+            VALUES (1, 'admin', 'admin', 'admin', 'admin', 'ADMIN', 'false', '2020-12-12 11:30:30.12345')
+                ON CONFLICT DO NOTHING
+        </sql>
+    </changeSet>
+
+    <changeSet author="vasil" id="6">
+        <sql>
+            INSERT INTO rate
+            VALUES (1, 3, 1, 0, 1, 0, 1)
+                ON CONFLICT DO NOTHING
+        </sql>
+    </changeSet>
+
+    <changeSet author="vasil" id="7">
+        <sql>
+            INSERT INTO question
+            VALUES (1, false, 'first question', 'first answer', 1, 1, '2020-12-12 11:30:30.12345')
+                ON CONFLICT DO NOTHING
+        </sql>
+    </changeSet>
+</databaseChangeLog>

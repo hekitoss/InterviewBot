@@ -1,6 +1,6 @@
 package com.interview.controller;
 
-import com.interview.dao.QuestionDao;
+import com.interview.dao.Question;
 import com.interview.dto.QuestionDto;
 import com.interview.exception.NotFoundException;
 import com.interview.service.QuestionService;
@@ -26,8 +26,8 @@ public class QuestionController {
     }
 
     @PostMapping()
-    public ResponseEntity<QuestionDao> create(@RequestParam String text, @RequestParam String answer) {
-        return new ResponseEntity<>(questionService.save(new QuestionDao(text, answer)), HttpStatus.OK);
+    public ResponseEntity<Question> create(@RequestParam String text, @RequestParam String answer) {
+        return new ResponseEntity<>(questionService.save(new Question(text, answer)), HttpStatus.OK);
     }
 
     @GetMapping()
@@ -36,12 +36,12 @@ public class QuestionController {
     }
 
     @PostMapping("/{id}/rate")
-    public ResponseEntity<QuestionDao> rate(@PathVariable long id, @RequestParam int rate) throws NotFoundException {
+    public ResponseEntity<Question> rate(@PathVariable long id, @RequestParam int rate) throws NotFoundException {
         return new ResponseEntity<>(questionService.evaluateById(id, rate), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<QuestionDao> delete(@PathVariable long id) throws NotFoundException {
+    public ResponseEntity<Question> delete(@PathVariable long id) throws NotFoundException {
         return new ResponseEntity<>(questionService.deleteById(id), HttpStatus.OK);
     }
 }
