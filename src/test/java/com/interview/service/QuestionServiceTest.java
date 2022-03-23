@@ -1,7 +1,7 @@
 package com.interview.service;
 
-import com.interview.dao.Question;
-import com.interview.dao.Rate;
+import com.interview.entity.Question;
+import com.interview.entity.Rate;
 import com.interview.dto.QuestionDto;
 import com.interview.mapper.QuestionMapper;
 import com.interview.repository.QuestionRepository;

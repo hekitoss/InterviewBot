@@ -4,7 +4,12 @@
     <changeSet author="vasil" id="5">
         <sql>
             INSERT INTO users
-            VALUES (1, 'admin', 'admin', 'admin', 'admin', 'ADMIN', 'false', '2020-12-12 11:30:30.12345')
+            VALUES
+                   (1, '$2a$12$f9.SORO3IUZQQTfy31zIeOKDQXBTmTsiKuzet/G.igAztP0E.c3F.', 'admin', 'admin', 'admin', 'ADMIN', 'ACTIVE', '2022-01-01 11:30:30.12345'),
+                   (2, '$2a$12$e090oX7bGHfLpbx8LP6P/ua1K/lKSK6MPrF5G3qnGHVAHf4DFJXqO', 'user1', 'user1', 'user1', 'USER', 'ACTIVE', '2022-01-01 11:30:30.12345'),
+                   (3, '$2a$12$e090oX7bGHfLpbx8LP6P/ua1K/lKSK6MPrF5G3qnGHVAHf4DFJXqO', 'user2', 'user2', 'user2', 'USER', 'ACTIVE', '2022-01-01 11:30:30.12345'),
+                   (4, '$2a$12$e090oX7bGHfLpbx8LP6P/ua1K/lKSK6MPrF5G3qnGHVAHf4DFJXqO', 'user3', 'user3', 'user3', 'USER', 'ACTIVE', '2022-01-01 11:30:30.12345'),
+                   (5, '$2a$12$e090oX7bGHfLpbx8LP6P/ua1K/lKSK6MPrF5G3qnGHVAHf4DFJXqO', 'user4', 'user4', 'user4', 'USER', 'ACTIVE', '2022-01-01 11:30:30.12345')
                 ON CONFLICT DO NOTHING
         </sql>
     </changeSet>
@@ -20,7 +25,7 @@
     <changeSet author="vasil" id="7">
         <sql>
             INSERT INTO question
-            VALUES (1, false, 'first question', 'first answer', 1, 1, '2020-12-12 11:30:30.12345')
+            VALUES (1, false, 'first question', 'first answer', 1, 1, '2022-01-01 11:30:30.12345')
                 ON CONFLICT DO NOTHING
         </sql>
     </changeSet>

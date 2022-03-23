@@ -1,6 +1,6 @@
 package com.interview.controller;
 
-import com.interview.dao.Question;
+import com.interview.entity.Question;
 import com.interview.dto.QuestionDto;
 import com.interview.exception.NotFoundException;
 import com.interview.service.QuestionService;
@@ -27,7 +27,7 @@ public class QuestionController {
 
     @PostMapping()
     public ResponseEntity<Question> create(@RequestParam String text, @RequestParam String answer) {
-        return new ResponseEntity<>(questionService.save(new Question(text, answer)), HttpStatus.OK);
+        return new ResponseEntity<>(questionService.save(new Question(text, answer)), HttpStatus.CREATED);
     }
 
     @GetMapping()

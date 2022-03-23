@@ -1,6 +1,6 @@
 package com.interview.validation;
 
-import com.interview.dao.Rate;
+import com.interview.entity.Rate;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,7 +9,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.xml.bind.ValidationException;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThrows;
 
 @RunWith(SpringRunner.class)

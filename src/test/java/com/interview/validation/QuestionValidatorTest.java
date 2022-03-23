@@ -1,7 +1,7 @@
 package com.interview.validation;
 
-import com.interview.dao.Question;
-import com.interview.dao.Rate;
+import com.interview.entity.Question;
+import com.interview.entity.Rate;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

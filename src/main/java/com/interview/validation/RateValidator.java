@@ -1,6 +1,6 @@
 package com.interview.validation;
 
-import com.interview.dao.Rate;
+import com.interview.entity.Rate;
 import lombok.SneakyThrows;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

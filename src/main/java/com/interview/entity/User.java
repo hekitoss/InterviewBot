@@ -1,11 +1,14 @@
-package com.interview.dao;
+package com.interview.entity;
 
-import com.interview.config.Role;
+import com.interview.entity.constance.Role;
+import com.interview.entity.constance.Status;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -26,8 +29,10 @@ public class User {
     private String username;
     private String name;
     private String surname;
+    @Enumerated(value = EnumType.STRING)
     private Role role;
-    private boolean isDeleted;
+    @Enumerated(value = EnumType.STRING)
+    private Status status;
     private OffsetDateTime creationTime;
     private OffsetDateTime deletingTime;
 

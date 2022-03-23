@@ -1,4 +1,4 @@
-package com.interview.dao;
+package com.interview.entity;
 
 import com.sun.istack.NotNull;
 import lombok.Data;
@@ -44,7 +44,7 @@ public class Question {
     private OffsetDateTime deletingTime;
 
     @OneToOne
-    @JoinColumn(name = "owner_id")
+    @JoinColumn(name = "creator_id")
     private User owner;
 
     public Question(String text, String answer) {

@@ -1,7 +1,7 @@
 package com.interview.mapper;
 
-import com.interview.dao.Question;
-import com.interview.dao.Rate;
+import com.interview.entity.Question;
+import com.interview.entity.Rate;
 import com.interview.dto.QuestionDto;
 import org.junit.Test;
 import org.junit.runner.RunWith;

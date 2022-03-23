@@ -1,6 +1,6 @@
 package com.interview.mapper;
 
-import com.interview.dao.Question;
+import com.interview.entity.Question;
 import com.interview.dto.QuestionDto;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
