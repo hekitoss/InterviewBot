@@ -37,7 +37,7 @@ public class QuestionService {
     }
 
     public List<QuestionDto> findAll() {
-        log.debug("find all method");
+        log.debug("find all method for questions");
         return questionRepository.findAll().stream()
                 .filter(q -> !q.isDeleted())
                 .map(questionMapper::convertToDto)
@@ -45,17 +45,16 @@ public class QuestionService {
     }
 
     public Question deleteById(Long id) throws NotFoundException {
-        log.debug("delete by id method, with id: " + id);
+        log.debug("delete question by id method, with id: " + id);
         return questionRepository.findById(id).stream()
                 .filter(q -> !q.isDeleted())
-                .peek(e -> {save(e.setDeleted(true)
-                        .setDeletingTime(OffsetDateTime.now()));})
+                .peek(e -> save(e.setDeleted(true).setDeletingTime(OffsetDateTime.now())))
                 .findFirst()
                 .orElseThrow(() -> new NotFoundException("No question with id:" + id));
     }
 
     public Question save(Question question) {
-        log.debug("save method");
+        log.debug("save question method");
         if (Objects.isNull(question.getRate())){
             question.setRate(new Rate());
         }
@@ -66,7 +65,7 @@ public class QuestionService {
     }
 
     public Question evaluateById(Long id, int rate) throws NotFoundException {
-        log.debug("evaluate by id method, with id: " + id);
+        log.debug("evaluate question by id method, with id: " + id);
         return questionRepository.findById(id).stream()
                 .filter(q -> !q.isDeleted())
                 .peek(q -> rateValidator.validate(q.getRate()))
@@ -76,7 +75,7 @@ public class QuestionService {
     }
 
     public Question findById(Long id) throws NotFoundException {
-        log.debug("find by id method, with id: " + id);
+        log.debug("find question by id method, with id: " + id);
         return questionRepository.findById(id).stream()
                 .filter(q -> !q.isDeleted())
                 .findFirst()
