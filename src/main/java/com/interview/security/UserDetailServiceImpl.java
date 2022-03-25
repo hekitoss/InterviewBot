@@ -1,4 +1,4 @@
-package com.interview.config;
+package com.interview.security;
 
 import com.interview.entity.User;
 import com.interview.repository.UserRepository;
