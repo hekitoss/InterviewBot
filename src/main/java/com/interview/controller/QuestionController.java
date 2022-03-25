@@ -6,6 +6,7 @@ import com.interview.exception.NotFoundException;
 import com.interview.service.QuestionService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,11 +27,13 @@ public class QuestionController {
     }
 
     @PostMapping()
+    @PreAuthorize("hasAnyAuthority('QUESTIONS_ADD')")
     public ResponseEntity<Question> create(@RequestParam String text, @RequestParam String answer) {
         return new ResponseEntity<>(questionService.save(new Question(text, answer)), HttpStatus.CREATED);
     }
 
     @GetMapping()
+    @PreAuthorize("hasAnyAuthority('QUESTIONS_READ')")
     public ResponseEntity<List<QuestionDto>> getAll() {
         return new ResponseEntity<>(questionService.findAll(), HttpStatus.OK);
     }
@@ -41,6 +44,7 @@ public class QuestionController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAnyAuthority('QUESTION_DELETE')")
     public ResponseEntity<Question> delete(@PathVariable long id) throws NotFoundException {
         return new ResponseEntity<>(questionService.deleteById(id), HttpStatus.OK);
     }
