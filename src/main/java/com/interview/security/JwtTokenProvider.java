@@ -2,6 +2,7 @@ package com.interview.security;
 
 import com.interview.exception.CustomJwtException;
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -60,7 +61,7 @@ public class JwtTokenProvider {
         try {
             Jws<Claims> claimsJws = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token);
             return !claimsJws.getBody().getExpiration().before(new Date());
-        } catch (CustomJwtException | IllegalArgumentException e) {
+        } catch (CustomJwtException | IllegalArgumentException | ExpiredJwtException e) {
             throw new CustomJwtException("Jwt token is expired or invalid", HttpStatus.UNAUTHORIZED);
         }
     }

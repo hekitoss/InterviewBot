@@ -50,7 +50,7 @@ public class QuestionService {
                 .filter(q -> !q.isDeleted())
                 .peek(e -> save(e.setDeleted(true).setDeletingTime(OffsetDateTime.now())))
                 .findFirst()
-                .orElseThrow(() -> new NotFoundException("No question with id:" + id));
+                .orElseThrow(() -> new NotFoundException("Not found question with id:" + id));
     }
 
     public Question save(Question question) {
@@ -71,7 +71,7 @@ public class QuestionService {
                 .peek(q -> rateValidator.validate(q.getRate()))
                 .peek(q -> rateRepository.save(q.getRate().evaluate(rate)))
                 .findFirst()
-                .orElseThrow(() -> new NotFoundException("No question with id:" + id));
+                .orElseThrow(() -> new NotFoundException("Not found question with id:" + id));
     }
 
     public Question findById(Long id) throws NotFoundException {
@@ -79,6 +79,6 @@ public class QuestionService {
         return questionRepository.findById(id).stream()
                 .filter(q -> !q.isDeleted())
                 .findFirst()
-                .orElseThrow(() -> new NotFoundException("No question with id:" + id));
+                .orElseThrow(() -> new NotFoundException("Not found question with id:" + id));
     }
 }

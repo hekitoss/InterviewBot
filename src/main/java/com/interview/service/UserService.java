@@ -39,27 +39,42 @@ public class UserService {
                 .collect(Collectors.toList());
     }
 
-    public UserDto findById(long id) throws NotFoundException {
+    public UserDto findById(Long id) throws NotFoundException {
         return userRepository.findById(id).stream()
                 .filter(user -> !user.getStatus().equals(Status.DELETED))
                 .findFirst()
                 .map(userMapper::convertToDto)
-                .orElseThrow(() -> new NotFoundException("No user with id:" + id));
+                .orElseThrow(() -> new NotFoundException("Not found user with id:" + id));
     }
 
-    public User findFullInfoById(long id) throws NotFoundException {
+    public User findFullInfoById(Long id) throws NotFoundException {
         return userRepository.findById(id).stream()
-                .filter(user -> !user.getStatus().equals(Status.DELETED))
                 .findFirst()
-                .orElseThrow(() -> new NotFoundException("No user with id:" + id));
+                .orElseThrow(() -> new NotFoundException("Not found user with id:" + id));
     }
 
     public UserDto save(User user) {
         User userForSave = user.setCreationTime(OffsetDateTime.now())
                 .setPassword(new BCryptPasswordEncoder().encode(user.getPassword()))
                 .setRole(Role.USER)
-                .setStatus(Status.ACTIVE);
+                .setStatus(user.getStatus() == null ? Status.ACTIVE: user.getStatus());
         userValidator.validate(userForSave);
         return userMapper.convertToDto(userRepository.save(userForSave));
+    }
+
+    public UserDto deleteById(Long id) throws NotFoundException {
+        return userRepository.findById(id).stream()
+                .peek(user -> save(user.setStatus(Status.DELETED).setDeletingTime(OffsetDateTime.now())))
+                .map(userMapper::convertToDto)
+                .findFirst()
+                .orElseThrow(() -> new NotFoundException("Not found user with id: " + id));
+    }
+
+    public UserDto banById(Long id) throws NotFoundException {
+        return userRepository.findById(id).stream()
+                .peek(user -> save(user.setStatus(Status.BANNED)))
+                .map(userMapper::convertToDto)
+                .findFirst()
+                .orElseThrow(() -> new NotFoundException("Not found user with id: " + id));
     }
 }
