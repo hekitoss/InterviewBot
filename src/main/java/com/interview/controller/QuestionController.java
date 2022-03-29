@@ -28,7 +28,7 @@ public class QuestionController {
 
     @PostMapping()
     @PreAuthorize("hasAnyAuthority('QUESTIONS_ADD')")
-    public ResponseEntity<Question> create(@RequestParam String text, @RequestParam String answer) {
+    public ResponseEntity<QuestionDto> create(@RequestParam String text, @RequestParam String answer) {
         return new ResponseEntity<>(questionService.save(new Question(text, answer)), HttpStatus.CREATED);
     }
 
@@ -39,13 +39,13 @@ public class QuestionController {
     }
 
     @PostMapping("/{id}/rate")
-    public ResponseEntity<Question> rate(@PathVariable long id, @RequestParam int rate) throws NotFoundException {
+    public ResponseEntity<QuestionDto> rate(@PathVariable long id, @RequestParam int rate) throws NotFoundException {
         return new ResponseEntity<>(questionService.evaluateById(id, rate), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
     @PreAuthorize("hasAnyAuthority('QUESTION_DELETE')")
-    public ResponseEntity<Question> delete(@PathVariable long id) throws NotFoundException {
+    public ResponseEntity<QuestionDto> delete(@PathVariable long id) throws NotFoundException {
         return new ResponseEntity<>(questionService.deleteById(id), HttpStatus.OK);
     }
 }

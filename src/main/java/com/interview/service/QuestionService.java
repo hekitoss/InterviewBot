@@ -3,6 +3,7 @@ package com.interview.service;
 import com.interview.entity.Question;
 import com.interview.entity.Rate;
 import com.interview.dto.QuestionDto;
+import com.interview.entity.User;
 import com.interview.exception.CustomJwtException;
 import com.interview.exception.NotFoundException;
 import com.interview.mapper.QuestionMapper;
@@ -51,46 +52,60 @@ public class QuestionService {
                 .collect(Collectors.toList());
     }
 
-    public Question deleteById(Long id) throws NotFoundException {
+    public QuestionDto deleteById(Long id) throws NotFoundException {
         log.debug("delete question by id method, with id: " + id);
         return questionRepository.findById(id).stream()
                 .filter(q -> !q.isDeleted())
                 .peek(e -> save(e.setDeleted(true).setDeletingTime(OffsetDateTime.now())))
+                .map(questionMapper::convertToDto)
                 .findFirst()
                 .orElseThrow(() -> new NotFoundException("Not found question with id:" + id));
     }
 
-    public Question save(Question question) {
+    public QuestionDto save(Question question) {
         log.debug("save question method");
         if (Objects.isNull(question.getRate())) {
             question.setRate(new Rate());
         }
         if (Objects.isNull(question.getOwner())) {
-            question.setOwner(userRepository.findUserByUsername(
-                    ((UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername())
-                    .orElseThrow(() -> new CustomJwtException("Not unauthorized ", HttpStatus.UNAUTHORIZED)));
+            question.setOwner(getCurrentUser());
         }
         rateValidator.validate(question.getRate());
         questionValidator.validate(question);
         rateRepository.save(question.getRate());
-        return questionRepository.save(question);
+        return questionMapper.convertToDto(questionRepository.save(question));
     }
 
-    public Question evaluateById(Long id, int rate) throws NotFoundException {
+    public QuestionDto evaluateById(Long id, int rate) throws NotFoundException {
         log.debug("evaluate question by id method, with id: " + id);
         return questionRepository.findById(id).stream()
                 .filter(q -> !q.isDeleted())
-                .peek(q -> rateValidator.validate(q.getRate()))
-                .peek(q -> rateRepository.save(q.getRate().evaluate(rate)))
+                .peek(question -> {
+                    rateValidator.validate(question.getRate());
+                    if (question.getRate().getUsers().contains(getCurrentUser())) {
+                        throw new IllegalArgumentException("Current user already rated this question");
+                    }
+                    question.getRate().getUsers().add(getCurrentUser());
+                    getCurrentUser().getRates().add(question.getRate());
+                    rateRepository.save(question.getRate().evaluate(rate));
+                })
+                .map(questionMapper::convertToDto)
                 .findFirst()
                 .orElseThrow(() -> new NotFoundException("Not found question with id:" + id));
     }
 
-    public Question findById(Long id) throws NotFoundException {
+    public QuestionDto findById(Long id) throws NotFoundException {
         log.debug("find question by id method, with id: " + id);
         return questionRepository.findById(id).stream()
                 .filter(q -> !q.isDeleted())
+                .map(questionMapper::convertToDto)
                 .findFirst()
                 .orElseThrow(() -> new NotFoundException("Not found question with id:" + id));
+    }
+
+    public User getCurrentUser() {
+        return userRepository.findUserByUsername(
+                ((UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername())
+                .orElseThrow(() -> new CustomJwtException("Not unauthorized ", HttpStatus.UNAUTHORIZED));
     }
 }

@@ -2,7 +2,7 @@
 <databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
     <changeSet author="vasil" id="1">
         <sql>
-            CREATE SEQUENCE IF NOT EXISTS hibernate_sequence START WITH 1000
+            CREATE SEQUENCE IF NOT EXISTS users_seq START WITH 1000
         </sql>
     </changeSet>
 
@@ -25,6 +25,12 @@
 
     <changeSet author="vasil" id="3">
         <sql>
+            CREATE SEQUENCE IF NOT EXISTS rate_seq START WITH 1000
+        </sql>
+    </changeSet>
+
+    <changeSet author="vasil" id="4">
+        <sql>
             CREATE TABLE IF NOT EXISTS rate (
                 id BIGINT NOT NULL,
                 number_of_evaluations INT NOT NULL,
@@ -38,7 +44,13 @@
         </sql>
     </changeSet>
 
-    <changeSet author="vasil" id="4">
+    <changeSet author="vasil" id="5">
+        <sql>
+            CREATE SEQUENCE IF NOT EXISTS question_seq START WITH 1000
+        </sql>
+    </changeSet>
+
+    <changeSet author="vasil" id="6">
         <sql>
             CREATE TABLE IF NOT EXISTS question (
                 id BIGINT NOT NULL,

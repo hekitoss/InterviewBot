@@ -1,21 +1,31 @@
 package com.interview.entity;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.SneakyThrows;
+import lombok.ToString;
 import lombok.experimental.Accessors;
+import org.hibernate.Hibernate;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import javax.persistence.SequenceGenerator;
 import javax.xml.bind.ValidationException;
+import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Accessors(chain = true)
-@Data
+@Getter
+@Setter
+@ToString
 public class Rate {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "rate_seq")
+    @SequenceGenerator(name = "rate_seq", allocationSize = 1)
     private Long id;
     private int one;
     private int two;
@@ -23,6 +33,9 @@ public class Rate {
     private int four;
     private int five;
     private int numberOfEvaluations;
+    @ManyToMany(mappedBy = "rates")
+    @ToString.Exclude
+    private Set<User> users;
 
     public Rate() {
         this.one = 0;
@@ -49,5 +62,18 @@ public class Rate {
         }
         numberOfEvaluations++;
         return this;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        Rate rate = (Rate) o;
+        return id != null && Objects.equals(id, rate.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
     }
 }

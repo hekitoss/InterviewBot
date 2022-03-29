@@ -1,8 +1,9 @@
 package com.interview.entity;
 
 import com.sun.istack.NotNull;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 import org.hibernate.Hibernate;
@@ -14,19 +15,22 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
+import javax.persistence.SequenceGenerator;
 import java.time.OffsetDateTime;
 import java.util.Objects;
 
 
 @Entity
-@NoArgsConstructor
 @Accessors(chain = true)
-@Data
+@Getter
+@Setter
+@RequiredArgsConstructor
 @ToString
 public class Question {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "question_seq")
+    @SequenceGenerator(name = "question_seq", allocationSize = 1)
     private Long id;
 
     @OneToOne(fetch = FetchType.EAGER)
