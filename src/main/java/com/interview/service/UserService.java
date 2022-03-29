@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.OffsetDateTime;
 import java.util.List;
+import java.util.Locale;
 import java.util.stream.Collectors;
 
 @Service
@@ -70,9 +71,9 @@ public class UserService {
                 .orElseThrow(() -> new NotFoundException("Not found user with id: " + id));
     }
 
-    public UserDto banById(Long id) throws NotFoundException {
+    public UserDto changeStatusById(Long id, String status) throws NotFoundException {
         return userRepository.findById(id).stream()
-                .peek(user -> save(user.setStatus(Status.BANNED)))
+                .peek(user -> save(user.setStatus(Status.valueOf(status.toUpperCase(Locale.ROOT)))))
                 .map(userMapper::convertToDto)
                 .findFirst()
                 .orElseThrow(() -> new NotFoundException("Not found user with id: " + id));

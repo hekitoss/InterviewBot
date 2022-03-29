@@ -11,9 +11,9 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -54,13 +54,13 @@ public class UserController {
 
     @DeleteMapping("/{id}")
     @PreAuthorize("hasAnyAuthority('USERS_DELETE')")
-    public ResponseEntity<UserDto> delete(@PathVariable long id) throws NotFoundException {
+    public ResponseEntity<UserDto> delete(@PathVariable Long id) throws NotFoundException {
         return new ResponseEntity<>(userService.deleteById(id), HttpStatus.OK);
     }
 
-    @PutMapping("/ban/{id}")
-    @PreAuthorize("hasAnyAuthority('USERS_BAN')")
-    public ResponseEntity<UserDto> ban(@PathVariable long id) throws NotFoundException {
-        return new ResponseEntity<>(userService.banById(id), HttpStatus.OK);
+    @PostMapping("/{id}/status")
+    @PreAuthorize("hasAnyAuthority('USERS_CHANGE_STATUS')")
+    public ResponseEntity<UserDto> changeStatus(@PathVariable Long id, @RequestParam String status) throws NotFoundException {
+        return new ResponseEntity<>(userService.changeStatusById(id, status), HttpStatus.OK);
     }
 }

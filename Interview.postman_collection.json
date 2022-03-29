@@ -374,7 +374,7 @@
 						"auth": {
 							"type": "noauth"
 						},
-						"method": "PUT",
+						"method": "POST",
 						"header": [
 							{
 								"key": "Authorization",
@@ -382,12 +382,8 @@
 								"type": "text"
 							}
 						],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
 						"url": {
-							"raw": "http://localhost:8080/users/ban/3",
+							"raw": "http://localhost:8080/users/3/status?status=active",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -395,8 +391,14 @@
 							"port": "8080",
 							"path": [
 								"users",
-								"ban",
-								"3"
+								"3",
+								"status"
+							],
+							"query": [
+								{
+									"key": "status",
+									"value": "active"
+								}
 							]
 						}
 					},

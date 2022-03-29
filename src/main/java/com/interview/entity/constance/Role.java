@@ -13,7 +13,7 @@ public enum Role {
             QUESTIONS_ADD,
             QUESTIONS_READ,
             USERS_DELETE,
-            USERS_BAN,
+            USERS_CHANGE_STATUS,
             USERS_GET_FULL_INFO,
             USER_ADD,
             USER_READ

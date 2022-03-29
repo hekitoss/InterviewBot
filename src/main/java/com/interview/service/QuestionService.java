@@ -3,14 +3,19 @@ package com.interview.service;
 import com.interview.entity.Question;
 import com.interview.entity.Rate;
 import com.interview.dto.QuestionDto;
+import com.interview.exception.CustomJwtException;
 import com.interview.exception.NotFoundException;
 import com.interview.mapper.QuestionMapper;
 import com.interview.repository.QuestionRepository;
 import com.interview.repository.RateRepository;
+import com.interview.repository.UserRepository;
 import com.interview.validation.QuestionValidator;
 import com.interview.validation.RateValidator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.time.OffsetDateTime;
@@ -22,15 +27,17 @@ import java.util.stream.Collectors;
 public class QuestionService {
     private final QuestionRepository questionRepository;
     private final RateRepository rateRepository;
+    private final UserRepository userRepository;
     private final QuestionMapper questionMapper;
     private final RateValidator rateValidator;
     private final QuestionValidator questionValidator;
 
     private static final Logger log = LogManager.getRootLogger();
 
-    public QuestionService(QuestionRepository questionRepository, RateRepository rateRepository, QuestionMapper questionMapper, RateValidator rateValidator, QuestionValidator questionValidator) {
+    public QuestionService(QuestionRepository questionRepository, RateRepository rateRepository, UserRepository userRepository, QuestionMapper questionMapper, RateValidator rateValidator, QuestionValidator questionValidator) {
         this.questionRepository = questionRepository;
         this.rateRepository = rateRepository;
+        this.userRepository = userRepository;
         this.questionMapper = questionMapper;
         this.rateValidator = rateValidator;
         this.questionValidator = questionValidator;
@@ -55,8 +62,13 @@ public class QuestionService {
 
     public Question save(Question question) {
         log.debug("save question method");
-        if (Objects.isNull(question.getRate())){
+        if (Objects.isNull(question.getRate())) {
             question.setRate(new Rate());
+        }
+        if (Objects.isNull(question.getOwner())) {
+            question.setOwner(userRepository.findUserByUsername(
+                    ((UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername())
+                    .orElseThrow(() -> new CustomJwtException("Not unauthorized ", HttpStatus.UNAUTHORIZED)));
         }
         rateValidator.validate(question.getRate());
         questionValidator.validate(question);
