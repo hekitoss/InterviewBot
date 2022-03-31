@@ -82,11 +82,12 @@ public class QuestionService {
                 .filter(q -> !q.isDeleted())
                 .peek(question -> {
                     rateValidator.validate(question.getRate());
-                    if (question.getRate().getUsers().contains(getCurrentUser())) {
+                    User currentUser = getCurrentUser();
+                    if (question.getRate().getUsers().contains(currentUser)) {
                         throw new IllegalArgumentException("Current user already rated this question");
                     }
-                    question.getRate().getUsers().add(getCurrentUser());
-                    getCurrentUser().getRates().add(question.getRate());
+                    question.getRate().getUsers().add(currentUser);
+                    currentUser.getRates().add(question.getRate());
                     rateRepository.save(question.getRate().evaluate(rate));
                 })
                 .map(questionMapper::convertToDto)
