@@ -10,11 +10,12 @@ import javax.xml.bind.ValidationException;
 import java.time.OffsetDateTime;
 
 @Component
-public class UserValidator {
+public class UserValidator implements Validator<User> {
 
     private static final Logger log = LogManager.getRootLogger();
 
     @SneakyThrows
+    @Override
     public void validate(User user){
         if(user.getPassword().length() > 255
                 || user.getUsername().length() > 20

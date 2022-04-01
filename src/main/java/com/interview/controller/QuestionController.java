@@ -39,6 +39,7 @@ public class QuestionController {
     }
 
     @PostMapping("/{id}/rate")
+    @PreAuthorize("hasAnyAuthority('QUESTIONS_RATE')")
     public ResponseEntity<QuestionDto> rate(@PathVariable long id, @RequestParam int rate) throws NotFoundException {
         return new ResponseEntity<>(questionService.evaluateById(id, rate), HttpStatus.OK);
     }

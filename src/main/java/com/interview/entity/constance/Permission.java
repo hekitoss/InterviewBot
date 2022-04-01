@@ -8,5 +8,6 @@ public enum Permission {
     USER_ADD,
     USER_READ,
     USERS_DELETE,
-    USERS_GET_FULL_INFO;
+    USERS_GET_FULL_INFO,
+    QUESTIONS_RATE
 }

@@ -9,11 +9,12 @@ import org.springframework.stereotype.Component;
 import javax.xml.bind.ValidationException;
 
 @Component
-public class RateValidator {
+public class RateValidator implements Validator<Rate> {
 
     private static final Logger log = LogManager.getRootLogger();
 
     @SneakyThrows
+    @Override
     public void validate(Rate rate){
         if(rate.getNumberOfEvaluations() != rate.getOne() + rate.getTwo() + rate.getThree() + rate.getFour() + rate.getFive()) {
             log.debug("rate not valid: " + rate);

@@ -16,13 +16,15 @@ public enum Role {
             USERS_CHANGE_STATUS,
             USERS_GET_FULL_INFO,
             USER_ADD,
-            USER_READ
+            USER_READ,
+            QUESTIONS_RATE
     )),
     USER(Set.of(
             QUESTION_DELETE,
             QUESTIONS_ADD,
             QUESTIONS_READ,
-            USER_READ
+            USER_READ,
+            QUESTIONS_RATE
     ));
 
     private final Set<Permission> permissions;

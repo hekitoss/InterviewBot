@@ -1,6 +1,5 @@
 package com.interview.entity;
 
-import com.sun.istack.NotNull;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -37,19 +36,16 @@ public class Question {
     @JoinColumn(name = "rate_id")
     private Rate rate;
 
-    @NotNull
-    private String text;
-    @NotNull
-    private String answer;
-    @NotNull
-    private boolean isDeleted;
-    @NotNull
-    private OffsetDateTime creationTime;
-    private OffsetDateTime deletingTime;
-
     @OneToOne
     @JoinColumn(name = "creator_id")
     private User owner;
+
+    private String text;
+    private String answer;
+    private boolean isDeleted;
+    private OffsetDateTime creationTime;
+    private OffsetDateTime deletingTime;
+
 
     public Question(String text, String answer) {
         this.text = text;

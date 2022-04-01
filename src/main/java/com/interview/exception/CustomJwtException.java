@@ -4,6 +4,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.core.AuthenticationException;
 
 public class CustomJwtException extends AuthenticationException {
+
     public HttpStatus getHttpStatus() {
         return httpStatus;
     }
