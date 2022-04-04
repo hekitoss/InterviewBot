@@ -24,7 +24,6 @@ import java.util.Objects;
 @Getter
 @Setter
 @RequiredArgsConstructor
-@ToString
 public class Question {
 
     @Id
@@ -65,5 +64,16 @@ public class Question {
     @Override
     public int hashCode() {
         return getClass().hashCode();
+    }
+
+    @Override
+    public String toString() {
+        return "Question{" +
+                "id=" + id +
+                ", owner=" + owner +
+                ", text='" + text + '\'' +
+                ", answer='" + answer + '\'' +
+                ", isDeleted=" + isDeleted +
+                '}';
     }
 }

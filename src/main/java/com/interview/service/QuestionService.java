@@ -53,6 +53,7 @@ public class QuestionService {
                 .collect(Collectors.toList());
     }
 
+    @Audit
     public QuestionDto deleteById(Long id) throws NotFoundException {
         log.debug( "delete question by id method, with id: " + id);
         return questionRepository.findById(id).stream()
@@ -63,6 +64,7 @@ public class QuestionService {
                 .orElseThrow(() -> new NotFoundException("Not found question with id:" + id));
     }
 
+    @Audit
     public QuestionDto save(Question question) {
         log.debug( "save question method for question: " + question);
         if (Objects.isNull(question.getRate())) {
@@ -77,6 +79,7 @@ public class QuestionService {
         return questionMapper.convertToDto(questionRepository.save(question));
     }
 
+    @Audit
     public QuestionDto evaluateById(Long id, int rate) throws NotFoundException {
         log.debug( "evaluate question by id method, with id: " + id);
         return questionRepository.findById(id).stream()
@@ -96,6 +99,7 @@ public class QuestionService {
                 .orElseThrow(() -> new NotFoundException("Not found question with id:" + id));
     }
 
+    @Audit
     public QuestionDto findById(Long id) throws NotFoundException {
         log.debug( "find question by id method, with id: " + id);
         return questionRepository.findById(id).stream()

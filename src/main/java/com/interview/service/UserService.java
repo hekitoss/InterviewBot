@@ -5,6 +5,7 @@ import com.interview.dto.UserDto;
 import com.interview.entity.constance.Role;
 import com.interview.entity.constance.Status;
 import com.interview.exception.NotFoundException;
+import com.interview.logger.Audit;
 import com.interview.mapper.UserMapper;
 import com.interview.repository.UserRepository;
 import com.interview.validation.UserValidator;
@@ -30,6 +31,7 @@ public class UserService {
         this.userValidator = userValidator;
     }
 
+    @Audit
     public List<UserDto> findAll(){
         log.debug("find all method for users");
         return userRepository.findAll().stream()
@@ -38,6 +40,7 @@ public class UserService {
                 .collect(Collectors.toList());
     }
 
+    @Audit
     public UserDto findById(Long id) throws NotFoundException {
         log.debug("find user by id: " + id);
         return userRepository.findById(id).stream()
@@ -47,6 +50,7 @@ public class UserService {
                 .orElseThrow(() -> new NotFoundException("Not found user with id:" + id));
     }
 
+    @Audit
     public User findFullInfoById(Long id) throws NotFoundException {
         log.debug("find full info for user with id: " + id);
         return userRepository.findById(id).stream()
@@ -54,6 +58,7 @@ public class UserService {
                 .orElseThrow(() -> new NotFoundException("Not found user with id:" + id));
     }
 
+    @Audit
     public UserDto save(User user) {
         log.debug("save user method for user: " + user);
         User userForSave = user.setCreationTime(OffsetDateTime.now())
@@ -64,6 +69,7 @@ public class UserService {
         return userMapper.convertToDto(userRepository.save(userForSave));
     }
 
+    @Audit
     public UserDto deleteById(Long id) throws NotFoundException {
         log.debug("delete user by id method, with id: " + id);
         return userRepository.findById(id).stream()
@@ -73,6 +79,7 @@ public class UserService {
                 .orElseThrow(() -> new NotFoundException("Not found user with id: " + id));
     }
 
+    @Audit
     public UserDto changeStatusById(Long id, String status) throws NotFoundException {
         log.debug("change status method for user with id: " + id + " on " + status);
         return userRepository.findById(id).stream()
