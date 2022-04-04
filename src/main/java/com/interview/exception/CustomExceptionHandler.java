@@ -1,8 +1,7 @@
 package com.interview.exception;
 
 import io.jsonwebtoken.JwtException;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import lombok.extern.log4j.Log4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.AuthenticationException;
@@ -10,11 +9,11 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import javax.xml.bind.ValidationException;
+import java.io.IOException;
 
 @ControllerAdvice
+@Log4j
 public class CustomExceptionHandler {
-
-    private static final Logger log = LogManager.getRootLogger();
 
     @ExceptionHandler(NotFoundException.class)
     public ResponseEntity<String> handleException(NotFoundException e) {

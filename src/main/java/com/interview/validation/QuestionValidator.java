@@ -2,8 +2,7 @@ package com.interview.validation;
 
 import com.interview.entity.Question;
 import lombok.SneakyThrows;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import lombok.extern.log4j.Log4j;
 import org.springframework.stereotype.Component;
 
 import javax.xml.bind.ValidationException;
@@ -11,9 +10,8 @@ import java.time.OffsetDateTime;
 import java.util.Objects;
 
 @Component
+@Log4j
 public class QuestionValidator implements Validator<Question> {
-
-    private static final Logger log = LogManager.getRootLogger();
 
     @SneakyThrows
     @Override

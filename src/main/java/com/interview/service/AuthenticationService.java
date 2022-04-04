@@ -4,6 +4,7 @@ import com.interview.dto.AuthenticateRequestDto;
 import com.interview.entity.User;
 import com.interview.repository.UserRepository;
 import com.interview.security.JwtTokenProvider;
+import lombok.extern.log4j.Log4j;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -13,6 +14,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Service
+@Log4j
 public class AuthenticationService {
 
     private final AuthenticationManager authenticationManager;
@@ -27,6 +29,7 @@ public class AuthenticationService {
 
 
     public Map<Object, Object> authenticate(AuthenticateRequestDto request) {
+        log.debug("authenticate for users + " + request.getUsername());
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
             User user = userRepository.findUserByUsername(request.getUsername())
                     .orElseThrow(() -> new UsernameNotFoundException("User not found"));

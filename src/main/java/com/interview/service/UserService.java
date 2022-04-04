@@ -8,8 +8,7 @@ import com.interview.exception.NotFoundException;
 import com.interview.mapper.UserMapper;
 import com.interview.repository.UserRepository;
 import com.interview.validation.UserValidator;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import lombok.extern.log4j.Log4j;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -19,12 +18,11 @@ import java.util.Locale;
 import java.util.stream.Collectors;
 
 @Service
+@Log4j
 public class UserService {
     private final UserRepository userRepository;
     private final UserMapper userMapper;
     private final UserValidator userValidator;
-
-    private static final Logger log = LogManager.getRootLogger();
 
     public UserService(UserRepository userRepository, UserMapper userMapper, UserValidator userValidator) {
         this.userRepository = userRepository;
@@ -41,6 +39,7 @@ public class UserService {
     }
 
     public UserDto findById(Long id) throws NotFoundException {
+        log.debug("find user by id: " + id);
         return userRepository.findById(id).stream()
                 .filter(user -> !user.getStatus().equals(Status.DELETED))
                 .findFirst()
@@ -49,12 +48,14 @@ public class UserService {
     }
 
     public User findFullInfoById(Long id) throws NotFoundException {
+        log.debug("find full info for user with id: " + id);
         return userRepository.findById(id).stream()
                 .findFirst()
                 .orElseThrow(() -> new NotFoundException("Not found user with id:" + id));
     }
 
     public UserDto save(User user) {
+        log.debug("save user method for user: " + user);
         User userForSave = user.setCreationTime(OffsetDateTime.now())
                 .setPassword(new BCryptPasswordEncoder().encode(user.getPassword()))
                 .setRole(Role.USER)
@@ -64,6 +65,7 @@ public class UserService {
     }
 
     public UserDto deleteById(Long id) throws NotFoundException {
+        log.debug("delete user by id method, with id: " + id);
         return userRepository.findById(id).stream()
                 .peek(user -> save(user.setStatus(Status.DELETED).setDeletingTime(OffsetDateTime.now())))
                 .map(userMapper::convertToDto)
@@ -72,6 +74,7 @@ public class UserService {
     }
 
     public UserDto changeStatusById(Long id, String status) throws NotFoundException {
+        log.debug("change status method for user with id: " + id + " on " + status);
         return userRepository.findById(id).stream()
                 .peek(user -> save(user.setStatus(Status.valueOf(status.toUpperCase(Locale.ROOT)))))
                 .map(userMapper::convertToDto)

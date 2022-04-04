@@ -2,17 +2,15 @@ package com.interview.validation;
 
 import com.interview.entity.User;
 import lombok.SneakyThrows;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import lombok.extern.log4j.Log4j;
 import org.springframework.stereotype.Component;
 
 import javax.xml.bind.ValidationException;
 import java.time.OffsetDateTime;
 
 @Component
+@Log4j
 public class UserValidator implements Validator<User> {
-
-    private static final Logger log = LogManager.getRootLogger();
 
     @SneakyThrows
     @Override
@@ -23,7 +21,7 @@ public class UserValidator implements Validator<User> {
                 || user.getSurname().length() > 10
                 || user.getCreationTime().isAfter(OffsetDateTime.now())
         ) {
-            log.debug("user not valid: " + user);
+            log.error("user not valid: " + user);
             throw new ValidationException("user not valid");
         }
     }

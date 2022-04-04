@@ -28,7 +28,6 @@ import java.util.Set;
 @Accessors(chain = true)
 @Getter
 @Setter
-@ToString
 @RequiredArgsConstructor
 @Table(name = "users")
 public class User {
@@ -65,5 +64,17 @@ public class User {
     @Override
     public int hashCode() {
         return getClass().hashCode();
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", name='" + name + '\'' +
+                ", surname='" + surname + '\'' +
+                ", role=" + role +
+                ", status=" + status +
+                '}';
     }
 }

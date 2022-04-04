@@ -2,16 +2,14 @@ package com.interview.validation;
 
 import com.interview.entity.Rate;
 import lombok.SneakyThrows;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import lombok.extern.log4j.Log4j;
 import org.springframework.stereotype.Component;
 
 import javax.xml.bind.ValidationException;
 
 @Component
+@Log4j
 public class RateValidator implements Validator<Rate> {
-
-    private static final Logger log = LogManager.getRootLogger();
 
     @SneakyThrows
     @Override
