@@ -1,4 +1,4 @@
-package com.interview.controller;
+package com.interview.controller.v1;
 
 import com.interview.dto.UserDto;
 import com.interview.entity.User;

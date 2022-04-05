@@ -38,10 +38,13 @@ public class QuestionServiceTest {
     private QuestionMapper questionMapper;
     @MockBean
     private UserRepository userRepository;
+    @MockBean
+    private AuthenticationService authenticationService;
 
     private Question question;
     private Question deletedQuestion;
     private Rate rate;
+    private User admin;
     private final Set<Rate> setsOfRates = new HashSet<>();
 
     @Autowired
@@ -49,16 +52,16 @@ public class QuestionServiceTest {
 
     @Before
     public void setUp() {
-        User user = new User()
+        admin = new User()
                 .setUsername("admin");
         question = new Question("text", "answer");
         question.setId(1L);
         Set<User> setsOfUsers = new HashSet<User>();
-        setsOfUsers.add(user);
+        setsOfUsers.add(admin);
         rate = new Rate();
         setsOfRates.add(rate);
         rate.setUsers(setsOfUsers);
-        user.setRates(setsOfRates);
+        admin.setRates(setsOfRates);
         question.setRate(rate);
         deletedQuestion = new Question().setDeleted(true);
         when(userRepository.findUserByUsername("admin")).thenReturn(Optional.of(new User()));
@@ -106,7 +109,7 @@ public class QuestionServiceTest {
     public void evaluateMethodCheck() {
         when(questionRepository.findById(1L)).thenReturn(Optional.of(question));
         when(questionMapper.convertToDto(question)).thenReturn(new QuestionDto());
-        questionService.getCurrentUser().setRates(setsOfRates);
+        when(authenticationService.getCurrentUser()).thenReturn(new User().setRates(setsOfRates));
 
         questionService.evaluateById(1L, 2);
 

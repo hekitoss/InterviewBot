@@ -32,6 +32,6 @@ public class AuthenticationController {
         authenticateRequestDto.setUsername(username);
         authenticateRequestDto.setPassword(password);
         authenticationService.authenticate(authenticateRequestDto);
-        return "login";
+        return "redirect:/v2/questions";
     }
 }
