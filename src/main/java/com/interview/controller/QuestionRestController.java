@@ -19,10 +19,10 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/questions")
-public class QuestionController {
+public class QuestionRestController {
     private final QuestionService questionService;
 
-    public QuestionController(QuestionService questionService) {
+    public QuestionRestController(QuestionService questionService) {
         this.questionService = questionService;
     }
 

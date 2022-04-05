@@ -15,11 +15,11 @@ import javax.servlet.http.HttpServletResponse;
 
 @RestController
 @RequestMapping("/auth")
-public class AuthenticationController {
+public class AuthenticationRestController {
 
     private final AuthenticationService authenticationService;
 
-    public AuthenticationController(AuthenticationService authenticationService) {
+    public AuthenticationRestController(AuthenticationService authenticationService) {
         this.authenticationService = authenticationService;
     }
 

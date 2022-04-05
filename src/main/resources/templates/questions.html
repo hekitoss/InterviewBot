@@ -1,0 +1,28 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Getting Started: Serving Web Content</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+<table>
+    <thead>
+    <tr>
+        <th> Question </th>
+        <th> Answer </th>
+        <th> Rate </th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:if="${questions.empty}">
+        <td colspan="2"> No questions available </td>
+    </tr>
+    <tr th:each="question : ${questions}">
+        <td><span th:text="${question.text}"> Question </span></td>
+        <td><span th:text="${question.answer}"> Answer </span></td>
+        <td><span th:text="${question.rate}"> Rate </span></td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>
