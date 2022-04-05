@@ -3,27 +3,51 @@
 <head>
     <title>Getting Started: Serving Web Content</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"/>
 </head>
 <body>
-<table>
-    <thead>
-    <tr>
-        <th> Question </th>
-        <th> Answer </th>
-        <th> Rate </th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:if="${questions.empty}">
-        <td colspan="2"> No questions available </td>
-    </tr>
-    <tr th:each="question : ${questions}">
-        <td><span th:text="${question.text}"> Question </span></td>
-        <td><span th:text="${question.answer}"> Answer </span></td>
-        <td><span th:text="${question.rate}"> Rate </span></td>
-    </tr>
-    </tbody>
-    <a th:href="@{/v2/profile}">my profile</a>
-</table>
+<nav class="py-2 bg-light border-bottom">
+    <div class="container d-flex flex-wrap">
+        <ul class="nav me-auto">
+            <li class="nav-item"><a href="/v2/questions" class="nav-link link-dark px-2 active" aria-current="page">Questions</a></li>
+            <li class="nav-item"><a href="/v2/profile" class="nav-link link-dark px-2">Profile</a></li>
+            <li class="nav-item"><a href="#" class="nav-link link-dark px-2">Pricing</a></li>
+            <li class="nav-item"><a href="#" class="nav-link link-dark px-2">FAQs</a></li>
+            <li class="nav-item"><a href="#" class="nav-link link-dark px-2">About</a></li>
+        </ul>
+        <ul class="nav">
+            <li class="nav-item" ><a th:href="@{/v2/profile}" class="nav-link link-dark px-2" >Login</a></li>
+            <li class="nav-item"><a th:href="@{/auth/logout}" class="nav-link link-dark px-2">LogOut</a></li>
+        </ul>
+    </div>
+</nav>
+<ol th:each="question : ${questions}">
+    <div class="col-md-8">
+
+        <article class="blog-post">
+            <h2 class="blog-post-title">Question name</h2>
+            <p class="blog-post-meta">January 1, 2021 by <a href="#">Mark</a> Rating: <b th:text="${question.rate}">Rate</b></p>
+
+            <p th:text="${question.text}">Text</p>
+            <hr>
+            <p th:text="${question.answer}">Answer</p>
+        </article>
+    </div>
+</ol>
 </body>
+<style>
+    .blog-post {
+        --bs-gutter-x: 1.5rem;
+        margin-bottom: 4rem;
+        padding-left: calc(var(--bs-gutter-x) * 5);
+    }
+    .blog-post-title {
+        margin-bottom: .25rem;
+        font-size: 2.5rem;
+    }
+    .blog-post-meta {
+        margin-bottom: 1.25rem;
+        color: #727272;
+    }
+</style>
 </html>
