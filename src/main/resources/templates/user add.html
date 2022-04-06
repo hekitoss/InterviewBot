@@ -25,30 +25,36 @@
     <main>
         <div class="py-5 text-center">
             <h2>Create new questions</h2>
-                <p class="lead">Below you can create new question, all fields are required</p>
+            <p class="lead">Below you can create new question, all fields are required</p>
         </div>
 
-        <div class="center">
-                <form class="needs-validation" th:href="@{/v2/questions/add}" method="post">
+        <div class="center" margin>
+                <form class="needs-validation" th:href="@{/v2/users/add}" method="post">
                     <div class="row g-3">
                         <div class="col-12">
-                            <label for="questions-name" class="form-label">Question's name</label>
-                            <input type="text"  name="questions_name" class="form-control" id="questions-name" required >
+                            <label for="name" class="form-label">Name</label>
+                            <input type="text"  name="name" class="form-control" id="name" required >
                         </div>
 
                         <div class="col-12">
-                            <label for="questions-text" class="form-label">Question's text</label>
-                            <textarea name="text" class="form-control" id="questions-text" required ></textarea>
+                            <label for="surname" class="form-label">Surname</label>
+                            <input type="text"  name="surname" class="form-control" id="surname" required >
                         </div>
 
                         <div class="col-12">
-                            <label for="answer" class="form-label">Answer </label>
-                            <input type="text" name="answer" class="form-control" id="answer" required >
+                            <label for="username" class="form-label">Username </label>
+                            <input type="text" name="username" class="form-control" id="username" required >
+                        </div>
+
+                        <div class="col-12">
+                            <label for="password" class="form-label">Password </label>
+                            <input type="text" name="password" class="form-control" id="password" required >
                         </div>
                     </div>
 
                     <br>
-                    <button class="btn btn-primary btn-lg small-center" type="submit">Create new questions</button>
+
+                    <button class="w-100 btn btn-primary btn-lg" type="submit">Registration</button>
                 </form>
         </div>
     </main>
@@ -56,10 +62,6 @@
 </body>
 <style>
     .center {
-        margin-right: 20%;
-        margin-left: 20%;
-    }
-    .small-center {
         margin-right: 30%;
         margin-left: 30%;
     }

@@ -10,14 +10,14 @@
     <div class="container d-flex flex-wrap">
         <ul class="nav me-auto">
             <li class="nav-item"><a href="/v2/questions" class="nav-link link-dark px-2 active" aria-current="page">Questions</a></li>
-            <li class="nav-item"><a href="/v2/profile" class="nav-link link-dark px-2">Profile</a></li>
-            <li class="nav-item"><a href="/v2/questions/add" class="nav-link link-dark px-2">New Question</a></li>
+            <li class="nav-item"><a href="/v2/users/profile" class="nav-link link-dark px-2">Profile</a></li>
+            <li class="nav-item"><a href="/v2/questions/add" class="nav-link link-dark px-2">New question</a></li>
             <li class="nav-item"><a href="#" class="nav-link link-dark px-2">FAQs</a></li>
             <li class="nav-item"><a href="/v2/about" class="nav-link link-dark px-2">About</a></li>
         </ul>
         <ul class="nav">
-            <li class="nav-item" ><a th:href="@{/v2/profile}" class="nav-link link-dark px-2" >Login</a></li>
-            <li class="nav-item"><a th:href="@{/auth/logout}" class="nav-link link-dark px-2">Logout</a></li>
+            <li class="nav-item" ><a th:href="@{/v2/users/profile}" class="nav-link link-dark px-2" >Login</a></li>
+            <li class="nav-item"><a th:href="@{/v2/auth/logout}" class="nav-link link-dark px-2" >Logout</a></li>
         </ul>
     </div>
 </nav>
