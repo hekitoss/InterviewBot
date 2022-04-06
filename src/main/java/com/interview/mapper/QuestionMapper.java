@@ -12,7 +12,9 @@ public class QuestionMapper {
     public QuestionMapper() {
         this.modelMapper = new ModelMapper();
         modelMapper.createTypeMap(Question.class, QuestionDto.class)
-                .addMapping(question -> question.getRate().getAverageRate(), QuestionDto::setRate);
+                .addMapping(question -> question.getRate().getAverageRate(), QuestionDto::setRate)
+                .addMapping(question -> question.getOwner().getUsername(), QuestionDto::setUsername)
+                .addMapping(Question::getCreationTime, QuestionDto::setDate);
     }
 
     public QuestionDto convertToDto(Question question){

@@ -14,6 +14,7 @@ import com.interview.validation.RateValidator;
 import lombok.extern.log4j.Log4j;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Objects;
@@ -53,7 +54,7 @@ public class QuestionService {
         log.debug( "delete question by id method, with id: " + id);
         return questionRepository.findById(id).stream()
                 .filter(q -> !q.isDeleted())
-                .peek(e -> save(e.setDeleted(true).setDeletingTime(OffsetDateTime.now())))
+                .peek(e -> save(e.setDeleted(true).setDeletingTime(LocalDateTime.now())))
                 .map(questionMapper::convertToDto)
                 .findFirst()
                 .orElseThrow(() -> new NotFoundException("Not found question with id:" + id));

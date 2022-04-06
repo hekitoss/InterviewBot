@@ -5,7 +5,6 @@ import com.interview.entity.constance.Status;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 import lombok.experimental.Accessors;
 import org.hibernate.Hibernate;
 
@@ -50,7 +49,6 @@ public class User {
             name = "question_likes",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "rate_id"))
-    @ToString.Exclude
     private Set<Rate> rates;
 
     @Override

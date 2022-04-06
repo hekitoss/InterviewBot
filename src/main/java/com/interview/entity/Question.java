@@ -15,6 +15,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
+import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.util.Objects;
 
@@ -39,17 +40,19 @@ public class Question {
     @JoinColumn(name = "creator_id")
     private User owner;
 
+    private String questionName;
     private String text;
     private String answer;
     private boolean isDeleted;
-    private OffsetDateTime creationTime;
-    private OffsetDateTime deletingTime;
+    private LocalDateTime creationTime;
+    private LocalDateTime deletingTime;
 
 
-    public Question(String text, String answer) {
+    public Question(String text, String answer, String questionName) {
         this.text = text;
         this.answer = answer;
-        creationTime = OffsetDateTime.now();
+        this.questionName = questionName;
+        creationTime = LocalDateTime.now();
         this.isDeleted = false;
     }
 
@@ -70,7 +73,7 @@ public class Question {
     public String toString() {
         return "Question{" +
                 "id=" + id +
-                ", owner=" + owner +
+                ", questionName=" + questionName +
                 ", text='" + text + '\'' +
                 ", answer='" + answer + '\'' +
                 ", isDeleted=" + isDeleted +

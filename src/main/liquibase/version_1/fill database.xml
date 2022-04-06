@@ -25,7 +25,7 @@
     <changeSet author="vasil" id="9">
         <sql>
             INSERT INTO question
-            VALUES (1, false, 'first question', 'first answer', 1, 1, '2022-01-01 11:30:30.12345')
+            VALUES (1, false, 'Первый вопрос','что такое java', 'java это язык программирования', 1, 1, '2022-01-01 11:30:30.12345')
                 ON CONFLICT DO NOTHING
         </sql>
     </changeSet>

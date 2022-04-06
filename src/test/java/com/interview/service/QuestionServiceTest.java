@@ -54,7 +54,7 @@ public class QuestionServiceTest {
     public void setUp() {
         admin = new User()
                 .setUsername("admin");
-        question = new Question("text", "answer");
+        question = new Question("text", "answer", "name");
         question.setId(1L);
         Set<User> setsOfUsers = new HashSet<User>();
         setsOfUsers.add(admin);

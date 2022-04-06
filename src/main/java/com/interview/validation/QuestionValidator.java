@@ -6,6 +6,7 @@ import lombok.extern.log4j.Log4j;
 import org.springframework.stereotype.Component;
 
 import javax.xml.bind.ValidationException;
+import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.util.Objects;
 
@@ -18,7 +19,7 @@ public class QuestionValidator implements Validator<Question> {
     public void validate(Question question) {
         if(question.getText().length() > 255
                 ||question.getAnswer().length() > 255
-                ||question.getCreationTime().isAfter(OffsetDateTime.now())
+                ||question.getCreationTime().isAfter(LocalDateTime.now())
                 ||Objects.isNull(question.getText())
                 ||Objects.isNull(question.getAnswer())
                 ||Objects.isNull(question.getOwner())

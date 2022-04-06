@@ -3,7 +3,6 @@ package com.interview.entity;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.SneakyThrows;
-import lombok.ToString;
 import lombok.experimental.Accessors;
 import org.hibernate.Hibernate;
 
@@ -21,7 +20,6 @@ import java.util.Set;
 @Accessors(chain = true)
 @Getter
 @Setter
-@ToString
 public class Rate {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "rate_seq")
@@ -34,7 +32,6 @@ public class Rate {
     private int five;
     private int numberOfEvaluations;
     @ManyToMany(mappedBy = "rates")
-    @ToString.Exclude
     private Set<User> users;
 
     public Rate() {
@@ -62,6 +59,14 @@ public class Rate {
         }
         numberOfEvaluations++;
         return this;
+    }
+
+    @Override
+    public String toString() {
+        return "Rate{" +
+                "id=" + id +
+                ", numberOfEvaluations=" + numberOfEvaluations +
+                '}';
     }
 
     @Override

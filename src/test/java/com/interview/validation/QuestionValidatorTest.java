@@ -9,7 +9,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.xml.bind.ValidationException;
-import java.time.OffsetDateTime;
+import java.time.LocalDateTime;
 
 import static org.junit.Assert.assertThrows;
 
@@ -27,7 +27,7 @@ public class QuestionValidatorTest {
                 .setText("text")
                 .setAnswer("answer")
                 .setId(1L)
-                .setCreationTime(OffsetDateTime.now())
+                .setCreationTime(LocalDateTime.now())
                 .setRate(new Rate()
                         .setId(1L)
                         .setFive(1)
@@ -38,7 +38,7 @@ public class QuestionValidatorTest {
 
     @Test
     public void validateNotValidQuest(){
-        validQuestion.setCreationTime(OffsetDateTime.now().plusDays(1));
+        validQuestion.setCreationTime(LocalDateTime.now().plusDays(1));
 
         assertThrows(ValidationException.class,
                 () -> questionValidator.validate(validQuestion));
