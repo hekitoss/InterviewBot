@@ -9,7 +9,6 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -30,14 +29,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .csrf().disable()
 //                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-//                .and()
                 .authorizeRequests()
-                .antMatchers("/").permitAll()
-                .antMatchers("/auth/login").permitAll()
-                .antMatchers("/v2/auth/login").permitAll()
-                .antMatchers("/v2/questions").permitAll()
-                .antMatchers("/v2/users/add").permitAll()
-                .anyRequest().authenticated()
                 .and()
                 .logout()
                     .logoutUrl("/logout")

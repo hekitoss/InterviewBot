@@ -1,8 +1,8 @@
 package com.interview.service;
 
+import com.interview.dto.QuestionDto;
 import com.interview.entity.Question;
 import com.interview.entity.Rate;
-import com.interview.dto.QuestionDto;
 import com.interview.entity.User;
 import com.interview.exception.NotFoundException;
 import com.interview.logger.Audit;
@@ -15,7 +15,6 @@ import lombok.extern.log4j.Log4j;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -103,5 +102,13 @@ public class QuestionService {
                 .map(questionMapper::convertToDto)
                 .findFirst()
                 .orElseThrow(() -> new NotFoundException("Not found question with id:" + id));
+    }
+
+    @Audit
+    public QuestionDto findRandomQuestion() throws NotFoundException {
+        log.debug( "find random question");
+        return questionRepository.findRandom()
+                .map(questionMapper::convertToDto)
+                .orElseThrow(() -> new NotFoundException("Not found available question"));
     }
 }

@@ -2,6 +2,7 @@ package com.interview.controller.v2;
 
 import com.interview.dto.AuthenticateRequestDto;
 import com.interview.service.AuthenticationService;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,6 +24,7 @@ public class AuthenticationController {
     }
 
     @GetMapping("/login")
+    @PreAuthorize("permitAll()")
     public String login(Model model, String error) {
         if (error != null) {
             model.addAttribute("error", "Username or password incorrect");
@@ -31,6 +33,7 @@ public class AuthenticationController {
     }
 
     @PostMapping("/login")
+    @PreAuthorize("permitAll()")
     public String authenticate(String password, String username){
         AuthenticateRequestDto authenticateRequestDto = new AuthenticateRequestDto();
         authenticateRequestDto.setUsername(username);
@@ -40,6 +43,7 @@ public class AuthenticationController {
     }
 
     @GetMapping("/logout")
+    @PreAuthorize("isAuthenticated()")
     public String logoutGetMethods(HttpServletRequest request, HttpServletResponse response){
         SecurityContextLogoutHandler securityContextLogoutHandler = new SecurityContextLogoutHandler();
         securityContextLogoutHandler.logout(request, response, null);

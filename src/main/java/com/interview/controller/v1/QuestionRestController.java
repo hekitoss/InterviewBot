@@ -49,4 +49,10 @@ public class QuestionRestController {
     public ResponseEntity<QuestionDto> delete(@PathVariable long id) throws NotFoundException {
         return new ResponseEntity<>(questionService.deleteById(id), HttpStatus.OK);
     }
+
+    @GetMapping("/random")
+    @PreAuthorize("hasAnyAuthority('QUESTIONS_READ')")
+    public ResponseEntity<QuestionDto> getRandomQuestions() throws NotFoundException {
+        return new ResponseEntity<>(questionService.findRandomQuestion(), HttpStatus.OK);
+    }
 }
