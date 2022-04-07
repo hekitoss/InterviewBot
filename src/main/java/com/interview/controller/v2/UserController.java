@@ -2,6 +2,7 @@ package com.interview.controller.v2;
 
 import com.interview.entity.User;
 import com.interview.service.AuthenticationService;
+import com.interview.service.QuestionService;
 import com.interview.service.UserService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -16,16 +17,20 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class UserController {
     private final AuthenticationService authenticationService;
     private final UserService userService;
+    private final QuestionService questionService;
 
-    public UserController(AuthenticationService authenticationService, UserService userService) {
+    public UserController(AuthenticationService authenticationService, UserService userService, QuestionService questionService) {
         this.authenticationService = authenticationService;
         this.userService = userService;
+        this.questionService = questionService;
     }
 
     @GetMapping("/profile")
     @PreAuthorize("isAuthenticated()")
     public String profile(Model model) {
-        model.addAttribute("name", authenticationService.getCurrentUser().getUsername());
+        User currentUser = authenticationService.getCurrentUser();
+        model.addAttribute("user", currentUser);
+        model.addAttribute("questions_number", questionService.findAllByUser(currentUser).size());
         return "profile";
     }
 

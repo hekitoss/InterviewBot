@@ -111,4 +111,13 @@ public class QuestionService {
                 .map(questionMapper::convertToDto)
                 .orElseThrow(() -> new NotFoundException("Not found available question"));
     }
+
+    @Audit
+    public List<QuestionDto> findAllByUser(User user) {
+        log.debug("find all method for questions");
+        return questionRepository.findAllByOwner(user).stream()
+                .filter(q -> !q.isDeleted())
+                .map(questionMapper::convertToDto)
+                .collect(Collectors.toList());
+    }
 }

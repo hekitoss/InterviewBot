@@ -21,6 +21,26 @@
     </div>
 </nav>
     <body>
-    <p th:text="'Hello, ' + ${name} + '!'" >Hello!</p>
+    <div class="row py-lg-5">
+        <div class="col-lg-6 col-md-8 mx-auto">
+            <h1 class="fw-light">Profile</h1><br>
+            <div class="mb-4">
+                <ruby>Name:  </ruby>
+                <ruby th:text="${user.name}">name</ruby>
+            </div>
+            <div class="mb-4">
+                <ruby>Surname:  </ruby>
+                <ruby th:text="${user.surname}">surname</ruby>
+            </div>
+            <div class="mb-4">
+                <ruby>Username:  </ruby>
+                <ruby th:text="${user.username}">username</ruby>
+            </div>
+            <div class="mb-4">
+                <ruby>Number of questions:  </ruby>
+                <ruby th:text="${questions_number}">questions number</ruby>
+            </div>
+        </div>
+    </div>
     </body>
 </html>
