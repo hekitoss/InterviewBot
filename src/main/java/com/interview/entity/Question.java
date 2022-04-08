@@ -3,7 +3,6 @@ package com.interview.entity;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 import lombok.experimental.Accessors;
 import org.hibernate.Hibernate;
 
@@ -16,7 +15,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import java.time.LocalDateTime;
-import java.time.OffsetDateTime;
 import java.util.Objects;
 
 

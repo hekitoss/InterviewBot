@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+    <changeSet author="vasil" id="12">
+        <sql>
+            CREATE SEQUENCE IF NOT EXISTS comment_seq START WITH 1000
+        </sql>
+    </changeSet>
+
+    <changeSet author="vasil" id="13">
+        <sql>
+        CREATE TABLE IF NOT EXISTS comment (
+            id BIGINT NOT NULL,
+            is_deleted BOOL NOT NULL,
+            text VARCHAR(255) NOT NULL,
+            question_id BIGINT,
+            creator_id BIGINT,
+            creation_time TIMESTAMP NOT NULL,
+            deleting_time TIMESTAMP,
+            PRIMARY KEY (id),
+            FOREIGN KEY (creator_id) REFERENCES users(id),
+            FOREIGN KEY (question_id) REFERENCES question(id)
+        )
+        </sql>
+    </changeSet>
+
+    <changeSet author="vasil" id="14">
+        <sql>
+            INSERT INTO comment
+            VALUES (1, false, 'this questions are suck', 1, 2, '2022-01-01 11:30:30.12345')
+                ON CONFLICT DO NOTHING
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>
