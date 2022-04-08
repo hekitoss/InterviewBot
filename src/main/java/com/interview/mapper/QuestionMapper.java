@@ -14,6 +14,7 @@ public class QuestionMapper {
         modelMapper.createTypeMap(Question.class, QuestionDto.class)
                 .addMapping(question -> question.getRate().getAverageRate(), QuestionDto::setRate)
                 .addMapping(question -> question.getOwner().getUsername(), QuestionDto::setUsername)
+                .addMapping(question -> question.getOwner().getId(), QuestionDto::setUserId)
                 .addMapping(Question::getCreationTime, QuestionDto::setDate);
     }
 

@@ -114,10 +114,16 @@ public class QuestionService {
 
     @Audit
     public List<QuestionDto> findAllByUser(User user) {
-        log.debug("find all method for questions");
+        log.debug("find all method by user");
         return questionRepository.findAllByOwner(user).stream()
                 .filter(q -> !q.isDeleted())
                 .map(questionMapper::convertToDto)
                 .collect(Collectors.toList());
+    }
+
+    @Audit
+    public int countQuestionByCreatorId(Long id) {
+        log.debug("count question number by creator id");
+        return questionRepository.countQuestionByCreatorId(id);
     }
 }

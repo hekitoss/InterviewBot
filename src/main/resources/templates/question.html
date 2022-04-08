@@ -26,7 +26,7 @@
             <h2 class="blog-post-title"  th:text="${question.questionName}">Question name</h2>
             <p class="blog-post-meta">
                 <ruby th:text="${#temporals.format(question.date, 'dd-MMMM-yyyy')}">January 1, 2021</ruby>
-                <a href="#" th:text="${question.username}">Mark</a> Rating:
+                <a th:href="@{/v2/users/{id}(id=${question.userId})}" th:text="${question.username}">Mark</a> Rating:
                 <b th:text="${question.rate}">Rate</b>
             </p>
 

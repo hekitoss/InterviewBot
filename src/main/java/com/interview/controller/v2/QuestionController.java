@@ -1,11 +1,8 @@
 package com.interview.controller.v2;
 
-import com.interview.dto.QuestionDto;
 import com.interview.entity.Question;
 import com.interview.exception.NotFoundException;
 import com.interview.service.QuestionService;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

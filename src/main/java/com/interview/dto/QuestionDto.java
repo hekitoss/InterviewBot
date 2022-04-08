@@ -12,6 +12,7 @@ public class QuestionDto {
     private String text;
     private String answer;
     private String username;
+    private Long userId;
     private String questionName;
     private float rate;
     private LocalDateTime date;

@@ -20,38 +20,27 @@
         </ul>
     </div>
 </nav>
-<ol th:each="question : ${questions}">
-    <div class="col-md-8">
-
-        <article class="blog-post">
-            <h2 class="blog-post-title" th:text="${question.questionName}">Question name</h2>
-            <p class="blog-post-meta">
-                <ruby th:text="${#temporals.format(question.date, 'dd-MMMM-yyyy')}">January 1, 2021</ruby>
-                <a th:href="@{/v2/users/{id}(id=${question.userId})}" th:text="${question.username}">Username</a> Rating:
-                <b th:text="${question.rate}">Rate</b>
-            </p>
-
-            <p th:text="${question.text}">Text</p>
-            <hr>
-            <p th:text="${question.answer}">Answer</p>
-        </article>
+<body>
+<div class="row py-lg-5">
+    <div class="col-lg-6 col-md-8 mx-auto">
+        <h1 class="fw-light">Profile</h1><br>
+        <div class="mb-4">
+            <ruby>Name:  </ruby>
+            <ruby th:text="${user.name}">name</ruby>
+        </div>
+        <div class="mb-4">
+            <ruby>Surname:  </ruby>
+            <ruby th:text="${user.surname}">surname</ruby>
+        </div>
+        <div class="mb-4">
+            <ruby>Username:  </ruby>
+            <ruby th:text="${user.username}">username</ruby>
+        </div>
+        <div class="mb-4">
+            <ruby>Number of questions:  </ruby>
+            <ruby th:text="${questions_number}">questions number</ruby>
+        </div>
     </div>
-</ol>
+</div>
 </body>
-<style>
-    .blog-post {
-        --bs-gutter-x: 1.5rem;
-        margin-bottom: 4rem;
-        margin-top: 2rem;
-        padding-left: calc(var(--bs-gutter-x) * 5);
-    }
-    .blog-post-title {
-        margin-bottom: .25rem;
-        font-size: 2.5rem;
-    }
-    .blog-post-meta {
-        margin-bottom: 1.25rem;
-        color: #727272;
-    }
-</style>
 </html>
