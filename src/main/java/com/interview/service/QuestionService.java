@@ -28,15 +28,16 @@ public class QuestionService {
     private final RateValidator rateValidator;
     private final QuestionValidator questionValidator;
     private final AuthenticationService authenticationService;
+    private final CommentService commentService;
 
-
-    public QuestionService(QuestionRepository questionRepository, RateRepository rateRepository, QuestionMapper questionMapper, RateValidator rateValidator, QuestionValidator questionValidator, AuthenticationService authenticationService) {
+    public QuestionService(QuestionRepository questionRepository, RateRepository rateRepository, QuestionMapper questionMapper, RateValidator rateValidator, QuestionValidator questionValidator, AuthenticationService authenticationService, CommentService commentService) {
         this.questionRepository = questionRepository;
         this.rateRepository = rateRepository;
         this.questionMapper = questionMapper;
         this.rateValidator = rateValidator;
         this.questionValidator = questionValidator;
         this.authenticationService = authenticationService;
+        this.commentService = commentService;
     }
 
     @Audit
@@ -45,6 +46,16 @@ public class QuestionService {
         return questionRepository.findAll().stream()
                 .filter(q -> !q.isDeleted())
                 .map(questionMapper::convertToDto)
+                .collect(Collectors.toList());
+    }
+
+    @Audit
+    public List<QuestionDto> findAllWithComment() {
+        log.debug("find all method for questions with comment");
+        return questionRepository.findAll().stream()
+                .filter(q -> !q.isDeleted())
+                .map(questionMapper::convertToDto)
+                .map(questionDto -> questionDto.setCommentDto(commentService.findTopCommentByQuestionId(questionDto.getId())))
                 .collect(Collectors.toList());
     }
 

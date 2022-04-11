@@ -6,7 +6,6 @@ import com.interview.service.CommentService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -27,12 +26,18 @@ public class CommentRestController {
     @GetMapping("/{id}")
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<CommentDto> like(@PathVariable Long id) throws NotFoundException {
-        return null;
+        return new ResponseEntity<>(commentService.likeCommentById(id), HttpStatus.OK);
+    }
+
+    @GetMapping("/{questionId}/top")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<CommentDto> findTopComment(@PathVariable Long questionId) {
+        return new ResponseEntity<>(commentService.findTopCommentByQuestionId(questionId), HttpStatus.OK);
     }
 
     @PostMapping("/{questionId}")
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<CommentDto> commentAdd(@PathVariable Long questionId, @RequestParam String text, Model model) {
+    public ResponseEntity<CommentDto> commentAdd(@PathVariable Long questionId, @RequestParam String text) {
         return new ResponseEntity<>(commentService.save(questionId, text), HttpStatus.OK);
     }
 }

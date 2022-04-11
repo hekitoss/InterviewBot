@@ -42,12 +42,14 @@ public class Comment {
 
     private String text;
     private boolean isDeleted;
+    private Long numberOfLikes;
     private LocalDateTime creationTime;
     private LocalDateTime deletingTime;
 
     public Comment(String text) {
         this.text = text;
-        creationTime = LocalDateTime.now();
         this.isDeleted = false;
+        this.numberOfLikes = 0L;
+        creationTime = LocalDateTime.now();
     }
 }

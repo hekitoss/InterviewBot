@@ -7,6 +7,7 @@ import com.interview.exception.NotFoundException;
 import com.interview.mapper.CommentMapper;
 import com.interview.repository.CommentRepository;
 import com.interview.repository.QuestionRepository;
+import lombok.SneakyThrows;
 import org.springframework.stereotype.Service;
 
 import java.util.Set;
@@ -26,19 +27,23 @@ public class CommentService {
         this.commentMapper = commentMapper;
     }
 
-    public CommentDto findTopCommentByQuestionId(Long id) {
-        return null;
+    @SneakyThrows
+    public CommentDto findTopCommentByQuestionId(Long questionId) {
+        return commentMapper.commentDto(commentRepository.findTopCommentByQuestionId(questionId).orElseThrow(() -> new NotFoundException("Not found comment with id:" + questionId)));
     }
 
-    public void likeCommentById(Long id) throws NotFoundException {
+    public CommentDto likeCommentById(Long id) throws NotFoundException {
         User user = authenticationService.getCurrentUser();
-        Set<User> likes = commentRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("Not found comment with id:" + id)).getLikes();
-        if(likes.contains(user)) {
+        Comment comment = commentRepository.findById(id).orElseThrow(() -> new NotFoundException("Not found comment with id:" + id));
+        Set<User> likes = comment.getLikes();
+        if (likes.contains(user)) {
             likes.remove(user);
+            comment.setNumberOfLikes(comment.getNumberOfLikes() - 1);
         } else {
             likes.add(user);
+            comment.setNumberOfLikes(comment.getNumberOfLikes() + 1);
         }
+        return commentMapper.commentDto(commentRepository.save(comment));
     }
 
     public CommentDto save(Long questionId, String text) {

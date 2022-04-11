@@ -21,19 +21,16 @@ import java.util.List;
 public class QuestionController {
 
     private final QuestionService questionService;
-    private final CommentService commentService;
 
-    public QuestionController(QuestionService questionService, CommentService commentService) {
+    public QuestionController(QuestionService questionService) {
         this.questionService = questionService;
-        this.commentService = commentService;
     }
 
     @GetMapping()
     @PreAuthorize("permitAll()")
     public String getAll(Model model) {
-        List<QuestionDto> all = questionService.findAll();
+        List<QuestionDto> all = questionService.findAllWithComment();
         model.addAttribute("questions", all);
-        all.stream().map(questionDto -> questionDto.getId()).forEach(id -> commentService.findTopCommentByQuestionId(id));
         return "questions";
     }
 

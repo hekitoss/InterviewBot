@@ -14,6 +14,7 @@
             id BIGINT NOT NULL,
             is_deleted BOOL NOT NULL,
             text VARCHAR(255) NOT NULL,
+            number_of_likes BIGINT,
             question_id BIGINT,
             creator_id BIGINT,
             creation_time TIMESTAMP NOT NULL,
@@ -28,7 +29,8 @@
     <changeSet author="vasil" id="14">
         <sql>
             INSERT INTO comment
-            VALUES (1, false, 'this questions are suck', 1, 2, '2022-01-01 11:30:30.12345')
+            VALUES (1, false, 'this questions are suck', 3, 1, 2, '2022-01-01 11:30:30.12345'),
+             (2, false, 'this questions are awesome', 1, 1, 1, '2022-01-01 11:30:30.12345')
                 ON CONFLICT DO NOTHING
         </sql>
     </changeSet>

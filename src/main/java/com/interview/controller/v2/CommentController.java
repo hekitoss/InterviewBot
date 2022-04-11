@@ -23,14 +23,14 @@ public class CommentController {
 
     @GetMapping("/{id}")
     @PreAuthorize("isAuthenticated()")
-    public String like(@PathVariable Long id, Model model) throws NotFoundException {
+    public String like(@PathVariable Long id) throws NotFoundException {
         commentService.likeCommentById(id);
         return "redirect:/v2/questions";
     }
 
     @PostMapping("/{questionId}")
     @PreAuthorize("isAuthenticated()")
-    public String commentAdd(@PathVariable Long questionId, @RequestParam String text, Model model) throws NotFoundException {
+    public String commentAdd(@PathVariable Long questionId, @RequestParam String text) {
         commentService.save(questionId, text);
         return "redirect:/v2/questions";
     }
