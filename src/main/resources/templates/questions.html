@@ -34,6 +34,8 @@
             <p th:text="${question.text}">Text</p>
             <hr>
             <p th:text="${question.answer}">Answer</p>
+            <p class="comment-header">Comment:</p>
+            <p class="comment-body" th:text="${question.commentDto != null} ? ${question.commentDto.text}">comment body</p>
         </article>
     </div>
 </ol>
@@ -52,6 +54,12 @@
     .blog-post-meta {
         margin-bottom: 1.25rem;
         color: #727272;
+    }
+    .comment-header{
+        margin-left: 3%;
+    }
+    .comment-body{
+        margin-left: 3%;
     }
 </style>
 </html>

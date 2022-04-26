@@ -23,7 +23,7 @@
     <div class="col-md-8">
 
         <article class="blog-post">
-            <h2 class="blog-post-title"  th:text="${question.questionName}">Question name</h2>
+            <h2 class="blog-post-title"  th:href="@{/v2/questions/{id}(id=${question.id})}" th:text="${question.questionName}">Question name</h2>
             <p class="blog-post-meta">
                 <ruby th:text="${#temporals.format(question.date, 'dd-MMMM-yyyy')}">January 1, 2021</ruby>
                 <a th:href="@{/v2/users/{id}(id=${question.userId})}" th:text="${question.username}">Mark</a> Rating:
@@ -33,6 +33,11 @@
             <p th:text="${question.text}">Text</p>
             <hr>
             <p th:text="${question.answer}">Answer</p>
+            <p class="comment-header">Comments:</p>
+            <ol th:each="questions : ${question.getCommentsDto()}">
+                <p class="comment-body" th:text="${questions.text}">comment body</p>
+
+            </ol>
         </article>
     </div>
 </body>

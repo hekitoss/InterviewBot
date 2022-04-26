@@ -16,5 +16,4 @@ public class QuestionDto {
     private String questionName;
     private float rate;
     private LocalDateTime date;
-    private CommentDto commentDto;
 }

@@ -1,5 +1,7 @@
 package com.interview.service;
 
+import com.interview.dto.QuestionAndAllCommentsDto;
+import com.interview.dto.QuestionAndTopCommentDto;
 import com.interview.dto.QuestionDto;
 import com.interview.entity.Question;
 import com.interview.entity.Rate;
@@ -50,11 +52,11 @@ public class QuestionService {
     }
 
     @Audit
-    public List<QuestionDto> findAllWithComment() {
+    public List<QuestionAndTopCommentDto> findAllWithComment() {
         log.debug("find all method for questions with comment");
         return questionRepository.findAll().stream()
                 .filter(q -> !q.isDeleted())
-                .map(questionMapper::convertToDto)
+                .map(questionMapper::convertToDtoWithTopComment)
                 .map(questionDto -> questionDto.setCommentDto(commentService.findTopCommentByQuestionId(questionDto.getId())))
                 .collect(Collectors.toList());
     }
@@ -106,20 +108,22 @@ public class QuestionService {
     }
 
     @Audit
-    public QuestionDto findById(Long id) throws NotFoundException {
+    public QuestionAndAllCommentsDto findById(Long id) throws NotFoundException {
         log.debug( "find question by id method, with id: " + id);
         return questionRepository.findById(id).stream()
                 .filter(q -> !q.isDeleted())
-                .map(questionMapper::convertToDto)
+                .map(questionMapper::convertToDtoWithAllComments)
+                .map(questionDto -> questionDto.setCommentsDto(commentService.findAllCommentsByQuestionId(questionDto.getId())))
                 .findFirst()
                 .orElseThrow(() -> new NotFoundException("Not found question with id:" + id));
     }
 
     @Audit
-    public QuestionDto findRandomQuestion() throws NotFoundException {
+    public QuestionAndAllCommentsDto findRandomQuestion() throws NotFoundException {
         log.debug( "find random question");
         return questionRepository.findRandom()
-                .map(questionMapper::convertToDto)
+                .map(questionMapper::convertToDtoWithAllComments)
+                .map(questionDto -> questionDto.setCommentsDto(commentService.findAllCommentsByQuestionId(questionDto.getId())))
                 .orElseThrow(() -> new NotFoundException("Not found available question"));
     }
 

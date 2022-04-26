@@ -1,5 +1,7 @@
 package com.interview.mapper;
 
+import com.interview.dto.QuestionAndAllCommentsDto;
+import com.interview.dto.QuestionAndTopCommentDto;
 import com.interview.entity.Question;
 import com.interview.dto.QuestionDto;
 import org.modelmapper.ModelMapper;
@@ -20,5 +22,13 @@ public class QuestionMapper {
 
     public QuestionDto convertToDto(Question question){
         return modelMapper.map(question, QuestionDto.class);
+    }
+
+    public QuestionAndTopCommentDto convertToDtoWithTopComment(Question question){
+        return modelMapper.map(question, QuestionAndTopCommentDto.class);
+    }
+
+    public QuestionAndAllCommentsDto convertToDtoWithAllComments(Question question){
+        return modelMapper.map(question, QuestionAndAllCommentsDto.class);
     }
 }

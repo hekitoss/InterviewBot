@@ -1,9 +1,7 @@
 package com.interview.controller.v2;
 
-import com.interview.dto.QuestionDto;
 import com.interview.entity.Question;
 import com.interview.exception.NotFoundException;
-import com.interview.service.CommentService;
 import com.interview.service.QuestionService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -13,8 +11,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-
-import java.util.List;
 
 @Controller
 @RequestMapping("/v2/questions")
@@ -29,8 +25,7 @@ public class QuestionController {
     @GetMapping()
     @PreAuthorize("permitAll()")
     public String getAll(Model model) {
-        List<QuestionDto> all = questionService.findAllWithComment();
-        model.addAttribute("questions", all);
+        model.addAttribute("questions", questionService.findAllWithComment());
         return "questions";
     }
 
