@@ -7,5 +7,6 @@ public class CommentDto {
     private String text;
     private String creatorUserName;
     private Long userId;
-    private Long numberOfLikes;
+    private Long id;
+    private int numberOfLikes;
 }

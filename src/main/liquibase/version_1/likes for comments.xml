@@ -6,11 +6,11 @@
     <changeSet author="vasil" id="15">
         <sql>
             CREATE TABLE IF NOT EXISTS comment_likes (
-                coment_id BIGINT NOT NULL,
+                comment_id BIGINT NOT NULL,
                 user_id BIGINT NOT NULL,
-                PRIMARY KEY (user_id, coment_id),
+                PRIMARY KEY (user_id, comment_id),
                 FOREIGN KEY (user_id) REFERENCES users(id),
-                FOREIGN KEY (coment_id) REFERENCES comment(id)
+                FOREIGN KEY (comment_id) REFERENCES comment(id)
                 )
         </sql>
     </changeSet>

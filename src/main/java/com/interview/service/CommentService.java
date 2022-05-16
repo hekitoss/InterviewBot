@@ -44,6 +44,15 @@ public class CommentService {
 
     @Audit
     @SneakyThrows
+    public Long findQuestionIdByCommentId(Long commentId) {
+        log.debug("find question id by comment id:  " + commentId);
+        return commentRepository.findById(commentId)
+                .orElseThrow(() -> new NotFoundException("Not found comment with id:" + commentId))
+                .getQuestion().getId();
+    }
+
+    @Audit
+    @SneakyThrows
     public List<CommentDto> findAllCommentsByQuestionId(Long questionId) {
         log.debug("find all comments method for question with id: " + questionId);
         return commentRepository.findAllByQuestionId(questionId).stream()
@@ -55,17 +64,18 @@ public class CommentService {
     @Audit
     public CommentDto likeCommentById(Long id) throws NotFoundException {
         log.debug("like comment method with id: " + id);
-        User user = authenticationService.getCurrentUser();
-        Comment comment = commentRepository.findById(id).orElseThrow(() -> new NotFoundException("Not found comment with id:" + id));
-        Set<User> likes = comment.getLikes();
-        if (likes.contains(user)) {
-            likes.remove(user);
-            comment.setNumberOfLikes(comment.getNumberOfLikes() - 1);
-        } else {
-            likes.add(user);
-            comment.setNumberOfLikes(comment.getNumberOfLikes() + 1);
-        }
-        return commentMapper.commentDto(commentRepository.save(comment));
+        return commentRepository.findById(id).map(
+                comment -> {
+                    User user = authenticationService.getCurrentUser();
+                    Set<User> likes = comment.getLikedUsers();
+                    if (likes.contains(user)) {
+                        likes.remove(user);
+                    } else {
+                        likes.add(user);
+                    }
+                    return commentMapper.commentDto(commentRepository.save(comment.setLikedUsers(likes)));
+                })
+                .orElseThrow(() -> new NotFoundException("Not found comment with id:" + id));
     }
 
     @Audit

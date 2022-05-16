@@ -20,25 +20,38 @@
         </ul>
     </div>
 </nav>
-<ol th:each="question : ${questions}">
     <div class="col-md-8">
 
         <article class="blog-post">
+            <ol th:each="question : ${questions}">
+
             <h2 class="blog-post-title" th:text="${question.questionName}">Question name</h2>
             <p class="blog-post-meta">
                 <ruby th:text="${#temporals.format(question.date, 'dd-MMMM-yyyy')}">January 1, 2021</ruby>
-                <a th:href="@{/v2/users/{id}(id=${question.userId})}" th:text="${question.username}">Username</a> Rating:
+                <a th:href="@{|/v2/users/${question.userId}|}" th:text="${question.username}">Username</a> Rating:
                 <b th:text="${question.rate}">Rate</b>
             </p>
 
             <p th:text="${question.text}">Text</p>
             <hr>
             <p th:text="${question.answer}">Answer</p>
-            <p class="comment-header">Comment:</p>
-            <p class="comment-body" th:text="${question.commentDto != null} ? ${question.commentDto.text}">comment body</p>
+            <div th:if="${question.commentDto != null}">
+                <p>
+                    Пользователь
+                    <a th:href="@{|/v2/users/${question.commentDto.userId}|}" th:text="${question.commentDto.creatorUserName}">Username</a>
+                    оставил коментарий:
+                </p>
+                <p class="comment-body" th:text="${question.commentDto.text}">comment body</p>
+                <p class="ui-corner-right">
+                    Likes: <td th:text="${question.commentDto.numberOfLikes}">0</td>
+                <a th:href="@{|/v2/comments/${question.commentDto.id}/likeAndReturnOnMain|}">like</a>
+                </p>
+            </div>
+            </ol>
+
         </article>
+
     </div>
-</ol>
 </body>
 <style>
     .blog-post {
@@ -55,11 +68,11 @@
         margin-bottom: 1.25rem;
         color: #727272;
     }
-    .comment-header{
-        margin-left: 3%;
-    }
     .comment-body{
         margin-left: 3%;
+    }
+    .ui-corner-right {
+        text-align : right;
     }
 </style>
 </html>

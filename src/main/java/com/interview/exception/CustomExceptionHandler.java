@@ -20,6 +20,7 @@ public class CustomExceptionHandler {
     @Audit
     public ResponseEntity<String> handleException(NotFoundException e) {
         log.error("was catch error: " + e.getMessage());
+        e.printStackTrace();
         return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
     }
 
@@ -27,6 +28,7 @@ public class CustomExceptionHandler {
     @Audit
     public ResponseEntity<String> handleException(ValidationException e) {
         log.error("was catch error: " + e.getMessage());
+        e.printStackTrace();
         return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
     }
 
@@ -34,6 +36,7 @@ public class CustomExceptionHandler {
     @Audit
     public ResponseEntity<String> handleException(AuthenticationException e) {
         log.error("was catch error: " + e.getMessage());
+        e.printStackTrace();
         return new ResponseEntity<>("invalid username/password combination", HttpStatus.UNAUTHORIZED);
     }
 
@@ -41,6 +44,7 @@ public class CustomExceptionHandler {
     @Audit
     public ResponseEntity<String> handleException(CustomJwtException e) {
         log.error("was catch error: " + e.getMessage());
+        e.printStackTrace();
         return new ResponseEntity<>(e.getMessage(), HttpStatus.UNAUTHORIZED);
     }
 
@@ -48,6 +52,7 @@ public class CustomExceptionHandler {
     @Audit
     public ResponseEntity<String> handleException(JwtException e) {
         log.error("was catch error: " + e.getMessage());
+        e.printStackTrace();
         return new ResponseEntity<>(e.getMessage(), HttpStatus.UNAUTHORIZED);
     }
 
@@ -55,6 +60,7 @@ public class CustomExceptionHandler {
     @Audit
     public ResponseEntity<String> handleException(IllegalArgumentException e) {
         log.error("was catch error: " + e.getMessage());
+        e.printStackTrace();
         return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
     }
 
@@ -62,6 +68,7 @@ public class CustomExceptionHandler {
     @Audit
     public ResponseEntity<String> handleException(IOException e) {
         log.error("was catch error: " + e.getMessage());
+        e.printStackTrace();
         return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
     }
 }

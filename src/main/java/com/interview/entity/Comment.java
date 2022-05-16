@@ -10,6 +10,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
@@ -37,8 +38,12 @@ public class Comment {
     @JoinColumn(name = "creator_id")
     private User creator;
 
-    @ManyToMany(mappedBy = "likeComments")
-    private Set<User> likes;
+    @ManyToMany
+    @JoinTable(
+            name = "comment_likes",
+            inverseJoinColumns = @JoinColumn(name = "user_id"),
+            joinColumns = @JoinColumn(name = "comment_id"))
+    private Set<User> likedUsers;
 
     private String text;
     private boolean isDeleted;

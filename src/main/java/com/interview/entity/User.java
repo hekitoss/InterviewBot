@@ -50,12 +50,9 @@ public class User {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "rate_id"))
     private Set<Rate> rates;
-    @ManyToMany
-    @JoinTable(
-            name = "comment_likes",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "comment_id"))
-    private Set<Rate> likeComments;
+
+    @ManyToMany(mappedBy = "likedUsers")
+    private Set<Comment> likedComments;
 
     @Override
     public boolean equals(Object o) {

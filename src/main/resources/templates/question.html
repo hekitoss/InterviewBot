@@ -33,11 +33,28 @@
             <p th:text="${question.text}">Text</p>
             <hr>
             <p th:text="${question.answer}">Answer</p>
-            <p class="comment-header">Comments:</p>
-            <ol th:each="questions : ${question.getCommentsDto()}">
-                <p class="comment-body" th:text="${questions.text}">comment body</p>
-
-            </ol>
+            <div th:if="${!question.getCommentsDto.isEmpty()}">
+                <ol th:each="comment : ${question.getCommentsDto()}">
+                    <p>
+                        Пользователь
+                        <a th:href="@{|/v2/users/${comment.userId}|}" th:text="${comment.creatorUserName}">Username</a>
+                        оставил коментарий:
+                    </p>
+                    <p class="comment-body" th:text="${comment.text}">comment body</p>
+                    <p class="ui-corner-right">
+                        Likes: <td th:text="${comment.numberOfLikes}">0</td>
+                        <a th:href="@{|/v2/comments/${comment.id}/like|}">like</a>
+                    </p>
+                </ol>
+            </div>
+            <form th:action="@{|/v2/comments/${question.id}|}" method="post">
+                <div class="col-6">
+                    <label for="comment" class="form-label">comment</label>
+                    <input type="text"  name="comment" class="form-control" id="comment" required >
+                    <br>
+                    <button class="btn btn-primary btn-sm small-center" type="submit">comment</button>
+                </div>
+            </form>
         </article>
     </div>
 </body>
@@ -55,6 +72,9 @@
     .blog-post-meta {
         margin-bottom: 1.25rem;
         color: #727272;
+    }
+    .ui-corner-right {
+        text-align : right;
     }
 </style>
 </html>
