@@ -12,6 +12,7 @@ import lombok.SneakyThrows;
 import lombok.extern.log4j.Log4j;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -70,8 +71,10 @@ public class CommentService {
                     Set<User> likes = comment.getLikedUsers();
                     if (likes.contains(user)) {
                         likes.remove(user);
+                        comment.setNumberOfLikes(comment.getNumberOfLikes() - 1);
                     } else {
                         likes.add(user);
+                        comment.setNumberOfLikes(comment.getNumberOfLikes() + 1);
                     }
                     return commentMapper.commentDto(commentRepository.save(comment.setLikedUsers(likes)));
                 })
@@ -85,6 +88,7 @@ public class CommentService {
                 commentRepository.save(new Comment(text)
                         .setCreator(authenticationService.getCurrentUser())
                         .setQuestion(questionRepository.getById(questionId)))
+                        .setLikedUsers(new HashSet<>())
         );
     }
 }
