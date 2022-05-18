@@ -3,11 +3,13 @@ package com.interview.entity.constance;
 public enum Permission {
     QUESTIONS_READ,
     QUESTIONS_ADD,
-    QUESTION_DELETE,
+    QUESTIONS_DELETE,
+    QUESTIONS_RATE,
     USERS_CHANGE_STATUS,
     USER_ADD,
     USER_READ,
     USERS_DELETE,
     USERS_GET_FULL_INFO,
-    QUESTIONS_RATE
+    COMMENTS_ADD,
+    COMMENTS_LIKE
 }

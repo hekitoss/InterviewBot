@@ -13,6 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.SequenceGenerator;
 import javax.xml.bind.ValidationException;
+import java.text.DecimalFormat;
 import java.util.Objects;
 import java.util.Set;
 
@@ -43,8 +44,8 @@ public class Rate {
         this.numberOfEvaluations = 0;
     }
 
-    public float getAverageRate(){
-        return numberOfEvaluations == 0 ? 0 : (float) (one + two*2 + three*3 + four*4 + five*5) / numberOfEvaluations;
+    public String getAverageRate(){
+        return new DecimalFormat( "#.##" ).format(numberOfEvaluations == 0 ? 0 : (float) (one + two*2 + three*3 + four*4 + five*5) / numberOfEvaluations);
     }
 
     @SneakyThrows

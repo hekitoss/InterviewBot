@@ -9,22 +9,27 @@ import static com.interview.entity.constance.Permission.*;
 
 public enum Role {
     ADMIN(Set.of(
-            QUESTION_DELETE,
+            QUESTIONS_DELETE,
             QUESTIONS_ADD,
             QUESTIONS_READ,
+            QUESTIONS_RATE,
             USERS_DELETE,
             USERS_CHANGE_STATUS,
             USERS_GET_FULL_INFO,
             USER_ADD,
             USER_READ,
-            QUESTIONS_RATE
+            COMMENTS_ADD,
+            COMMENTS_LIKE
+
     )),
     USER(Set.of(
-            QUESTION_DELETE,
+            QUESTIONS_DELETE,
             QUESTIONS_ADD,
             QUESTIONS_READ,
+            QUESTIONS_RATE,
             USER_READ,
-            QUESTIONS_RATE
+            COMMENTS_ADD,
+            COMMENTS_LIKE
     ));
 
     private final Set<Permission> permissions;

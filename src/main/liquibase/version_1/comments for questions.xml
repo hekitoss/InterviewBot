@@ -29,8 +29,8 @@
     <changeSet author="vasil" id="14">
         <sql>
             INSERT INTO comment
-            VALUES (1, false, 'this questions are suck', 3, 1, 2, '2022-01-01 11:30:30.12345'),
-             (2, false, 'this questions are awesome', 1, 1, 1, '2022-01-01 11:30:30.12345')
+            VALUES (1, false, 'This question suck', 3, 1, 2, '2022-01-01 11:30:30.12345'),
+             (2, false, 'This question awesome', 1, 1, 1, '2022-01-01 11:30:30.12345')
                 ON CONFLICT DO NOTHING
         </sql>
     </changeSet>

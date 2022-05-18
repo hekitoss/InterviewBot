@@ -55,4 +55,11 @@ public class QuestionController {
         questionService.save(new Question(text, answer, questions_name));
         return "redirect:/v2/questions";
     }
+
+    @GetMapping("/{id}/rate")
+    @PreAuthorize("hasAnyAuthority('QUESTIONS_RATE')")
+    public String rateQuestionsById(@PathVariable Long id, @RequestParam String rate, Model model) throws NotFoundException {
+        model.addAttribute("question", questionService.rateById(id, Integer.parseInt(rate)));
+        return "question";
+    }
 }

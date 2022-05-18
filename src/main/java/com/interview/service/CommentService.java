@@ -12,6 +12,7 @@ import lombok.SneakyThrows;
 import lombok.extern.log4j.Log4j;
 import org.springframework.stereotype.Service;
 
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -59,6 +60,7 @@ public class CommentService {
         return commentRepository.findAllByQuestionId(questionId).stream()
                 .filter(q -> !q.isDeleted())
                 .map(commentMapper::commentDto)
+                .sorted(Comparator.comparingInt(CommentDto::getNumberOfLikes).reversed())
                 .collect(Collectors.toList());
     }
 

@@ -14,6 +14,6 @@ public class QuestionDto {
     private String username;
     private Long userId;
     private String questionName;
-    private float rate;
+    private String rate;
     private LocalDateTime date;
 }

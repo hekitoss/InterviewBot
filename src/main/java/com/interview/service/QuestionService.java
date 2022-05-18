@@ -141,4 +141,16 @@ public class QuestionService {
         log.debug("count question number by creator id");
         return questionRepository.countQuestionByCreatorId(id);
     }
+
+    @Audit
+    public QuestionAndAllCommentsDto rateById(Long id, int rate) throws NotFoundException {
+        log.debug( "rate question by id method, with id: " + id + ", rate: " + rate);
+        return questionRepository.findById(id).stream()
+                .filter(q -> !q.isDeleted())
+                .map(question -> questionRepository.save(question.setRate(question.getRate().evaluate(rate))))
+                .map(questionMapper::convertToDtoWithAllComments)
+                .map(questionDto -> questionDto.setCommentsDto(commentService.findAllCommentsByQuestionId(questionDto.getId())))
+                .findFirst()
+                .orElseThrow(() -> new NotFoundException("Not found question with id:" + id));
+    }
 }

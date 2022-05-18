@@ -21,14 +21,14 @@ public class CommentController {
     }
 
     @GetMapping("/{id}/like")
-    @PreAuthorize("isAuthenticated()")
+    @PreAuthorize("hasAnyAuthority('COMMENTS_LIKE')")
     public String like(@PathVariable Long id) throws NotFoundException {
         commentService.likeCommentById(id);
         return "redirect:/v2/comments/" + id;
     }
 
     @GetMapping("/{id}/likeAndReturnOnMain")
-    @PreAuthorize("isAuthenticated()")
+    @PreAuthorize("hasAnyAuthority('COMMENTS_LIKE')")
     public String likeAndReturnOnMain(@PathVariable Long id) throws NotFoundException {
         commentService.likeCommentById(id);
         return "redirect:/v2/questions";
@@ -41,7 +41,7 @@ public class CommentController {
     }
 
     @PostMapping("/{questionId}")
-    @PreAuthorize("isAuthenticated()")
+    @PreAuthorize("hasAnyAuthority('COMMENTS_ADD')")
     public String commentAdd(@PathVariable Long questionId, @RequestParam String comment) {
         commentService.save(questionId, comment);
         return "redirect:/v2/questions/" + questionId;

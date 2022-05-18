@@ -22,10 +22,9 @@
 </nav>
     <div class="col-md-8">
 
-        <article class="blog-post">
-            <ol th:each="question : ${questions}">
+            <ol class="blog-post" th:each="question : ${questions}">
 
-            <h2 class="blog-post-title" th:text="${question.questionName}">Question name</h2>
+            <a class="blog-post-title" th:href="@{|/v2/questions/${question.id}|}" th:text="${question.questionName}">Question name</a>
             <p class="blog-post-meta">
                 <ruby th:text="${#temporals.format(question.date, 'dd-MMMM-yyyy')}">January 1, 2021</ruby>
                 <a th:href="@{|/v2/users/${question.userId}|}" th:text="${question.username}">Username</a> Rating:
@@ -49,7 +48,6 @@
             </div>
             </ol>
 
-        </article>
 
     </div>
 </body>
@@ -61,6 +59,9 @@
         padding-left: calc(var(--bs-gutter-x) * 5);
     }
     .blog-post-title {
+        text-decoration: none;
+        color: black;
+        font-weight: 500;
         margin-bottom: .25rem;
         font-size: 2.5rem;
     }

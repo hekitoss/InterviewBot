@@ -45,7 +45,7 @@ public class QuestionRestController {
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasAnyAuthority('QUESTION_DELETE')")
+    @PreAuthorize("hasAnyAuthority('QUESTIONS_DELETE')")
     public ResponseEntity<QuestionDto> delete(@PathVariable long id) throws NotFoundException {
         return new ResponseEntity<>(questionService.deleteById(id), HttpStatus.OK);
     }
