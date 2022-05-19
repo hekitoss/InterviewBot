@@ -1,9 +1,9 @@
 package com.interview.controller.v2;
 
-import com.interview.dto.UserDto;
 import com.interview.entity.User;
 import com.interview.exception.NotFoundException;
 import com.interview.service.AuthenticationService;
+import com.interview.service.CommentService;
 import com.interview.service.QuestionService;
 import com.interview.service.UserService;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -21,11 +21,13 @@ public class UserController {
     private final AuthenticationService authenticationService;
     private final UserService userService;
     private final QuestionService questionService;
+    private final CommentService commentService;
 
-    public UserController(AuthenticationService authenticationService, UserService userService, QuestionService questionService) {
+    public UserController(AuthenticationService authenticationService, UserService userService, QuestionService questionService, CommentService commentService) {
         this.authenticationService = authenticationService;
         this.userService = userService;
         this.questionService = questionService;
+        this.commentService = commentService;
     }
 
     @GetMapping("/profile")
@@ -34,6 +36,7 @@ public class UserController {
         User currentUser = authenticationService.getCurrentUser();
         model.addAttribute("user", currentUser);
         model.addAttribute("questions_number", questionService.countQuestionByCreatorId(currentUser.getId()));
+        model.addAttribute("comments_number", commentService.countCommentsByCreatorId(currentUser.getId()));
         return "profile";
     }
 
@@ -55,6 +58,7 @@ public class UserController {
     public String userPage(Model model, @PathVariable Long id) throws NotFoundException {
         model.addAttribute("user", userService.findFullInfoById(id));
         model.addAttribute("questions_number", questionService.countQuestionByCreatorId(id));
+        model.addAttribute("comments_number", commentService.countCommentsByCreatorId(id));
         return "user";
     }
 }

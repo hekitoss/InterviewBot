@@ -7,4 +7,5 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 public class QuestionAndTopCommentDto extends QuestionDto{
     private CommentDto commentDto;
+    private int numberOfComments;
 }

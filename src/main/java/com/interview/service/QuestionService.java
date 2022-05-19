@@ -52,12 +52,13 @@ public class QuestionService {
     }
 
     @Audit
-    public List<QuestionAndTopCommentDto> findAllWithComment() {
+    public List<QuestionAndTopCommentDto> findAllWithTopComment() {
         log.debug("find all method for questions with comment");
         return questionRepository.findAll().stream()
                 .filter(q -> !q.isDeleted())
                 .map(questionMapper::convertToDtoWithTopComment)
                 .map(questionDto -> questionDto.setCommentDto(commentService.findTopCommentByQuestionId(questionDto.getId())))
+                .map(questionDto -> questionDto.setNumberOfComments(commentService.findNumberOfCommentsByQuestionId(questionDto.getId())))
                 .collect(Collectors.toList());
     }
 
@@ -139,7 +140,7 @@ public class QuestionService {
     @Audit
     public int countQuestionByCreatorId(Long id) {
         log.debug("count question number by creator id");
-        return questionRepository.countQuestionByCreatorId(id);
+        return questionRepository.countQuestionByOwnerId(id);
     }
 
     @Audit

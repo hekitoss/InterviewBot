@@ -93,4 +93,15 @@ public class CommentService {
                         .setLikedUsers(new HashSet<>())
         );
     }
+
+    @Audit
+    public int findNumberOfCommentsByQuestionId(Long questionId) {
+        log.debug("find number of comments by question id: " + questionId);
+        return commentRepository.countCommentByQuestionId(questionId);
+    }
+
+    public int countCommentsByCreatorId(Long userId) {
+        log.debug("count comments number by creator id: " + userId);
+        return commentRepository.countCommentByCreatorId(userId);
+    }
 }

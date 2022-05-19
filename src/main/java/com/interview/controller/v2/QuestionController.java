@@ -25,7 +25,7 @@ public class QuestionController {
     @GetMapping()
     @PreAuthorize("permitAll()")
     public String getAll(Model model) {
-        model.addAttribute("questions", questionService.findAllWithComment());
+        model.addAttribute("questions", questionService.findAllWithTopComment());
         return "questions";
     }
 
@@ -58,8 +58,8 @@ public class QuestionController {
 
     @GetMapping("/{id}/rate")
     @PreAuthorize("hasAnyAuthority('QUESTIONS_RATE')")
-    public String rateQuestionsById(@PathVariable Long id, @RequestParam String rate, Model model) throws NotFoundException {
-        model.addAttribute("question", questionService.rateById(id, Integer.parseInt(rate)));
+    public String rateQuestionsById(@PathVariable Long id, @RequestParam int rate, Model model) throws NotFoundException {
+        model.addAttribute("question", questionService.rateById(id, rate));
         return "question";
     }
 }

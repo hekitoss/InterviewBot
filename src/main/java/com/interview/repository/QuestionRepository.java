@@ -16,9 +16,7 @@ public interface QuestionRepository extends JpaRepository<Question, Long> {
             nativeQuery = true)
     Optional<Question> findRandom();
 
-    @Query(value = "SELECT COUNT(q) FROM question q WHERE NOT is_deleted AND q.creator_id = ?1",
-            nativeQuery = true)
-    int countQuestionByCreatorId(Long id);
+    int countQuestionByOwnerId(Long id);
 
     List<Question> findAllByOwner(User user);
 }

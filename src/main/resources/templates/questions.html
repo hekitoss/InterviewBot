@@ -41,6 +41,10 @@
                     оставил коментарий:
                 </p>
                 <p class="comment-body" th:text="${question.commentDto.text}">comment body</p>
+                <p class="ui-corner-right" th:if="${question.numberOfComments != 0}">
+                    Comments: <td th:text="${question.numberOfComments}">0</td>
+                    <a th:href="@{|/v2/questions/${question.id}|}">see all</a>
+                </p>
                 <p class="ui-corner-right">
                     Likes: <td th:text="${question.commentDto.numberOfLikes}">0</td>
                 <a th:href="@{|/v2/comments/${question.commentDto.id}/likeAndReturnOnMain|}">like</a>
