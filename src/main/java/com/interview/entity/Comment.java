@@ -15,6 +15,8 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 import java.util.Set;
 
@@ -45,6 +47,8 @@ public class Comment {
             joinColumns = @JoinColumn(name = "comment_id"))
     private Set<User> likedUsers;
 
+    @NotBlank
+    @Size(min = 5, max = 10000, message = "text must be between 5 and 10000 characters")
     private String text;
     private boolean isDeleted;
     private Long numberOfLikes;

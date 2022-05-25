@@ -49,7 +49,7 @@ public class UserController {
     @PostMapping("/add")
     @PreAuthorize("permitAll()")
     public String userAdd(@RequestParam String name, @RequestParam String surname, @RequestParam String username, @RequestParam String password) {
-        userService.save(new User().setName(name).setSurname(surname).setUsername(username).setPassword(password));
+        userService.create(new User().setName(name).setSurname(surname).setUsername(username).setPassword(password));
         return "redirect:/v2/users/profile";
     }
 

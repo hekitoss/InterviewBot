@@ -14,6 +14,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
@@ -38,8 +40,14 @@ public class Question {
     @JoinColumn(name = "creator_id")
     private User owner;
 
+    @NotBlank
+    @Size(min = 5, max = 100, message = "questionName must be between 5 and 10000 characters")
     private String questionName;
+    @NotBlank
+    @Size(min = 5, max = 10000, message = "text must be between 5 and 10000 characters")
     private String text;
+    @NotBlank
+    @Size(min = 5, max = 10000, message = "answer must be between 5 and 10000 characters")
     private String answer;
     private boolean isDeleted;
     private LocalDateTime creationTime;

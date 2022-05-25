@@ -43,7 +43,7 @@ public class CommentController {
     @PostMapping("/{questionId}")
     @PreAuthorize("hasAnyAuthority('COMMENTS_ADD')")
     public String commentAdd(@PathVariable Long questionId, @RequestParam String comment) {
-        commentService.save(questionId, comment);
+        commentService.create(questionId, comment);
         return "redirect:/v2/questions/" + questionId;
     }
 }

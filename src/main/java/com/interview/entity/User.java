@@ -19,6 +19,8 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import java.time.OffsetDateTime;
 import java.util.Objects;
 import java.util.Set;
@@ -35,8 +37,14 @@ public class User {
     @SequenceGenerator(name = "users_seq", allocationSize = 1)
     private Long id;
     private String password;
+    @NotBlank
+    @Size(min = 3, max = 20, message = "username must be between 3 and 20 characters")
     private String username;
+    @NotBlank
+    @Size(min = 3, max = 20, message = "name must be between 3 and 20 characters")
     private String name;
+    @NotBlank
+    @Size(min = 3, max = 20, message = "surname must be between 3 and 20 characters")
     private String surname;
     @Enumerated(value = EnumType.STRING)
     private Role role;
@@ -44,6 +52,7 @@ public class User {
     private Status status;
     private OffsetDateTime creationTime;
     private OffsetDateTime deletingTime;
+
     @ManyToMany
     @JoinTable(
             name = "question_likes",

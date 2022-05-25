@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -35,9 +36,9 @@ public class UserRestController {
     }
 
     @PostMapping
-    @PreAuthorize("hasAnyAuthority('USER_ADD')")
+    @PreAuthorize("permitAll()")
     public ResponseEntity<UserDto> create(@RequestBody User user){
-        return new ResponseEntity<>(userService.save(user), HttpStatus.CREATED);
+        return new ResponseEntity<>(userService.create(user), HttpStatus.CREATED);
     }
 
     @GetMapping("/{id}")

@@ -38,6 +38,6 @@ public class CommentRestController {
     @PostMapping("/{questionId}")
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<CommentDto> commentAdd(@PathVariable Long questionId, @RequestParam String text) {
-        return new ResponseEntity<>(commentService.save(questionId, text), HttpStatus.OK);
+        return new ResponseEntity<>(commentService.create(questionId, text), HttpStatus.OK);
     }
 }

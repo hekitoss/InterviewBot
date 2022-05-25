@@ -11,14 +11,13 @@ import com.interview.logger.Audit;
 import com.interview.mapper.QuestionMapper;
 import com.interview.repository.QuestionRepository;
 import com.interview.repository.RateRepository;
-import com.interview.validation.QuestionValidator;
-import com.interview.validation.RateValidator;
 import lombok.extern.log4j.Log4j;
 import org.springframework.stereotype.Service;
 
+import javax.validation.Validation;
+import javax.validation.Validator;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -27,19 +26,21 @@ public class QuestionService {
     private final QuestionRepository questionRepository;
     private final RateRepository rateRepository;
     private final QuestionMapper questionMapper;
-    private final RateValidator rateValidator;
-    private final QuestionValidator questionValidator;
+    private final Validator validator;
     private final AuthenticationService authenticationService;
     private final CommentService commentService;
 
-    public QuestionService(QuestionRepository questionRepository, RateRepository rateRepository, QuestionMapper questionMapper, RateValidator rateValidator, QuestionValidator questionValidator, AuthenticationService authenticationService, CommentService commentService) {
+    public QuestionService(QuestionRepository questionRepository,
+                           RateRepository rateRepository,
+                           QuestionMapper questionMapper,
+                           AuthenticationService authenticationService,
+                           CommentService commentService) {
         this.questionRepository = questionRepository;
         this.rateRepository = rateRepository;
         this.questionMapper = questionMapper;
-        this.rateValidator = rateValidator;
-        this.questionValidator = questionValidator;
         this.authenticationService = authenticationService;
         this.commentService = commentService;
+        this.validator = Validation.buildDefaultValidatorFactory().getValidator();
     }
 
     @Audit
@@ -76,14 +77,7 @@ public class QuestionService {
     @Audit
     public QuestionDto save(Question question) {
         log.debug( "save question method for question: " + question);
-        if (Objects.isNull(question.getRate())) {
-            question.setRate(new Rate());
-        }
-        if (Objects.isNull(question.getOwner())) {
-            question.setOwner(authenticationService.getCurrentUser());
-        }
-        rateValidator.validate(question.getRate());
-        questionValidator.validate(question);
+        validator.validate(question);
         rateRepository.save(question.getRate());
         return questionMapper.convertToDto(questionRepository.save(question));
     }
@@ -94,7 +88,7 @@ public class QuestionService {
         return questionRepository.findById(id).stream()
                 .filter(q -> !q.isDeleted())
                 .peek(question -> {
-                    rateValidator.validate(question.getRate());
+                    validator.validate(question.getRate());
                     User currentUser = authenticationService.getCurrentUser();
                     if (question.getRate().getUsers().contains(currentUser)) {
                         throw new IllegalArgumentException("Current user already rated this question");
@@ -153,5 +147,9 @@ public class QuestionService {
                 .map(questionDto -> questionDto.setCommentsDto(commentService.findAllCommentsByQuestionId(questionDto.getId())))
                 .findFirst()
                 .orElseThrow(() -> new NotFoundException("Not found question with id:" + id));
+    }
+
+    public QuestionDto create(Question question) {
+        return save(question.setRate(new Rate()).setOwner(authenticationService.getCurrentUser()));
     }
 }

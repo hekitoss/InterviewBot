@@ -8,11 +8,12 @@ import com.interview.exception.NotFoundException;
 import com.interview.logger.Audit;
 import com.interview.mapper.UserMapper;
 import com.interview.repository.UserRepository;
-import com.interview.validation.UserValidator;
 import lombok.extern.log4j.Log4j;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.validation.Validation;
+import javax.validation.Validator;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Locale;
@@ -23,12 +24,12 @@ import java.util.stream.Collectors;
 public class UserService {
     private final UserRepository userRepository;
     private final UserMapper userMapper;
-    private final UserValidator userValidator;
+    private final Validator userValidator;
 
-    public UserService(UserRepository userRepository, UserMapper userMapper, UserValidator userValidator) {
+    public UserService(UserRepository userRepository, UserMapper userMapper) {
         this.userRepository = userRepository;
         this.userMapper = userMapper;
-        this.userValidator = userValidator;
+        this.userValidator = Validation.buildDefaultValidatorFactory().getValidator();
     }
 
     @Audit
@@ -61,12 +62,8 @@ public class UserService {
     @Audit
     public UserDto save(User user) {
         log.debug("save user method for user: " + user);
-        User userForSave = user.setCreationTime(OffsetDateTime.now())
-                .setPassword(new BCryptPasswordEncoder().encode(user.getPassword()))
-                .setRole(Role.USER)
-                .setStatus(user.getStatus() == null ? Status.ACTIVE: user.getStatus());
-        userValidator.validate(userForSave);
-        return userMapper.convertToDto(userRepository.save(userForSave));
+        userValidator.validate(user);
+        return userMapper.convertToDto(userRepository.save(user));
     }
 
     @Audit
@@ -87,5 +84,12 @@ public class UserService {
                 .map(userMapper::convertToDto)
                 .findFirst()
                 .orElseThrow(() -> new NotFoundException("Not found user with id: " + id));
+    }
+
+    public UserDto create(User user) {
+        return save(user.setCreationTime(OffsetDateTime.now())
+                .setPassword(new BCryptPasswordEncoder().encode(user.getPassword()))
+                .setRole(Role.USER)
+                .setStatus(user.getStatus() == null ? Status.ACTIVE: user.getStatus()));
     }
 }

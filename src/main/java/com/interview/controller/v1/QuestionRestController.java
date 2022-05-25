@@ -29,7 +29,7 @@ public class QuestionRestController {
     @PostMapping()
     @PreAuthorize("hasAnyAuthority('QUESTIONS_ADD')")
     public ResponseEntity<QuestionDto> create(@RequestParam String text, @RequestParam String answer, @RequestParam String questionName) {
-        return new ResponseEntity<>(questionService.save(new Question(text, answer, questionName)), HttpStatus.CREATED);
+        return new ResponseEntity<>(questionService.create(new Question(text, answer, questionName)), HttpStatus.CREATED);
     }
 
     @GetMapping()

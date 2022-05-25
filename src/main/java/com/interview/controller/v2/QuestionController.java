@@ -52,7 +52,7 @@ public class QuestionController {
     @PostMapping("/add")
     @PreAuthorize("hasAnyAuthority('QUESTIONS_ADD')")
     public String questionAdd(@RequestParam String text, @RequestParam String answer, @RequestParam String questions_name) {
-        questionService.save(new Question(text, answer, questions_name));
+        questionService.create(new Question(text, answer, questions_name));
         return "redirect:/v2/questions";
     }
 

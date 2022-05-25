@@ -12,6 +12,8 @@ import lombok.SneakyThrows;
 import lombok.extern.log4j.Log4j;
 import org.springframework.stereotype.Service;
 
+import javax.validation.Validation;
+import javax.validation.Validator;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
@@ -26,6 +28,7 @@ public class CommentService {
     private final AuthenticationService authenticationService;
     private final QuestionRepository questionRepository;
     private final CommentMapper commentMapper;
+    private final Validator validator;
 
     public CommentService(CommentRepository commentRepository,
                           AuthenticationService authenticationService,
@@ -35,6 +38,7 @@ public class CommentService {
         this.authenticationService = authenticationService;
         this.questionRepository = questionRepository;
         this.commentMapper = commentMapper;
+        this.validator = Validation.buildDefaultValidatorFactory().getValidator();
     }
 
     @Audit
@@ -84,14 +88,14 @@ public class CommentService {
     }
 
     @Audit
-    public CommentDto save(Long questionId, String text) {
+    public CommentDto create(Long questionId, String text) {
         log.debug("save comment method for question with id: " + questionId + ", comment: " + text);
-        return commentMapper.commentDto(
-                commentRepository.save(new Comment(text)
-                        .setCreator(authenticationService.getCurrentUser())
-                        .setQuestion(questionRepository.getById(questionId)))
-                        .setLikedUsers(new HashSet<>())
-        );
+        Comment comment = new Comment(text)
+                .setCreator(authenticationService.getCurrentUser())
+                .setQuestion(questionRepository.getById(questionId))
+                .setLikedUsers(new HashSet<>());
+        validator.validate(comment);
+        return commentMapper.commentDto(commentRepository.save(comment));
     }
 
     @Audit

@@ -16,7 +16,6 @@ public enum Role {
             USERS_DELETE,
             USERS_CHANGE_STATUS,
             USERS_GET_FULL_INFO,
-            USER_ADD,
             USER_READ,
             COMMENTS_ADD,
             COMMENTS_LIKE
