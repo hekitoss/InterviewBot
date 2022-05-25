@@ -41,7 +41,7 @@ public class Question {
     private User owner;
 
     @NotBlank
-    @Size(min = 5, max = 100, message = "questionName must be between 5 and 10000 characters")
+    @Size(min = 5, max = 100, message = "question name must be between 5 and 10000 characters")
     private String questionName;
     @NotBlank
     @Size(min = 5, max = 10000, message = "text must be between 5 and 10000 characters")

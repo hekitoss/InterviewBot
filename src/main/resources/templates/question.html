@@ -2,32 +2,34 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Getting Started: Serving Web Content</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"/>
 </head>
 <nav class="py-2 bg-light border-bottom">
     <div class="container d-flex flex-wrap">
         <ul class="nav me-auto">
-            <li class="nav-item"><a href="/v2/questions" class="nav-link link-dark px-2 active" aria-current="page">Questions</a></li>
+            <li class="nav-item"><a href="/v2/questions" class="nav-link link-dark px-2 active" aria-current="page">Questions</a>
+            </li>
             <li class="nav-item"><a href="/v2/users/profile" class="nav-link link-dark px-2">Profile</a></li>
             <li class="nav-item"><a href="/v2/questions/add" class="nav-link link-dark px-2">New question</a></li>
             <li class="nav-item"><a href="/v2/questions/random" class="nav-link link-dark px-2">Random question</a></li>
             <li class="nav-item"><a href="/v2/about" class="nav-link link-dark px-2">About</a></li>
         </ul>
         <ul class="nav">
-            <li class="nav-item" ><a th:href="@{/v2/users/profile}" class="nav-link link-dark px-2" >Login</a></li>
-            <li class="nav-item"><a th:href="@{/v2/auth/logout}" class="nav-link link-dark px-2" >Logout</a></li>
+            <li class="nav-item"><a th:href="@{/v2/users/profile}" class="nav-link link-dark px-2">Login</a></li>
+            <li class="nav-item"><a th:href="@{/v2/auth/logout}" class="nav-link link-dark px-2">Logout</a></li>
         </ul>
     </div>
 </nav>
-    <div class="col-md-8">
+<div class="col-md-8">
 
-        <article class="blog-post">
-            <h2 class="blog-post-title"  th:href="@{/v2/questions/{id}(id=${question.id})}" th:text="${question.questionName}">Question name</h2>
-            <p class="blog-post-meta">
-                <ruby th:text="${#temporals.format(question.date, 'dd-MMMM-yyyy')}">January 1, 2021</ruby>
-                <a th:href="@{/v2/users/{id}(id=${question.userId})}" th:text="${question.username}">Mark</a> Rating:
-                <b th:text="${question.rate}">Rate</b>
+    <article class="blog-post">
+        <h2 class="blog-post-title" th:href="@{/v2/questions/{id}(id=${question.id})}"
+            th:text="${question.questionName}">Question name</h2>
+        <p class="blog-post-meta">
+            <ruby th:text="${#temporals.format(question.date, 'dd-MMMM-yyyy')}">January 1, 2021</ruby>
+            <a th:href="@{/v2/users/{id}(id=${question.userId})}" th:text="${question.username}">Mark</a> Rating:
+            <b th:text="${question.rate}">Rate</b>
             <b class="star-wrapper">
                 <a th:href="@{|/v2/questions/${question.id}/rate?rate=5|}" class="fas fa-star s1"></a>
                 <a th:href="@{|/v2/questions/${question.id}/rate?rate=4|}" class="fas fa-star s2"></a>
@@ -36,35 +38,36 @@
                 <a th:href="@{|/v2/questions/${question.id}/rate?rate=1|}" class="fas fa-star s5"></a>
             </b>
             <script src="https://kit.fontawesome.com/5ea815c1d0.js"></script>
-            </p>
+        </p>
 
-            <p th:text="${question.text}">Text</p>
-            <hr>
-            <p th:text="${question.answer}">Answer</p>
-            <div th:if="${!question.getCommentsDto.isEmpty()}">
-                <ol th:each="comment : ${question.getCommentsDto()}">
-                    <p>
-                        Пользователь
-                        <a th:href="@{|/v2/users/${comment.userId}|}" th:text="${comment.creatorUserName}">Username</a>
-                        оставил коментарий:
-                    </p>
-                    <p class="comment-body" th:text="${comment.text}">comment body</p>
-                    <p class="ui-corner-right">
-                        Likes: <td th:text="${comment.numberOfLikes}">0</td>
-                        <a th:href="@{|/v2/comments/${comment.id}/like|}">like</a>
-                    </p>
-                </ol>
+        <p th:text="${question.text}">Text</p>
+        <hr>
+        <p th:text="${question.answer}">Answer</p>
+        <div th:if="${!question.getCommentsDto.isEmpty()}">
+            <ol th:each="comment : ${question.getCommentsDto()}">
+                <p>
+                    Пользователь
+                    <a th:href="@{|/v2/users/${comment.userId}|}" th:text="${comment.creatorUserName}">Username</a>
+                    оставил коментарий:
+                </p>
+                <p class="comment-body" th:text="${comment.text}">comment body</p>
+                <p class="ui-corner-right">
+                    Likes:
+                <td th:text="${comment.numberOfLikes}">0</td>
+                <a th:href="@{|/v2/comments/${comment.id}/like|}">like</a>
+                </p>
+            </ol>
+        </div>
+        <form th:action="@{|/v2/comments/${question.id}|}" method="post">
+            <div class="col-6">
+                <label for="comment" class="form-label">comment</label>
+                <input type="text" name="comment" class="form-control" id="comment" required>
+                <br>
+                <button class="btn btn-primary btn-sm small-center" type="submit">comment</button>
             </div>
-            <form th:action="@{|/v2/comments/${question.id}|}" method="post">
-                <div class="col-6">
-                    <label for="comment" class="form-label">comment</label>
-                    <input type="text"  name="comment" class="form-control" id="comment" required >
-                    <br>
-                    <button class="btn btn-primary btn-sm small-center" type="submit">comment</button>
-                </div>
-            </form>
-        </article>
-    </div>
+        </form>
+    </article>
+</div>
 </body>
 <style>
     .blog-post {
@@ -73,20 +76,26 @@
         margin-top: 2rem;
         padding-left: calc(var(--bs-gutter-x) * 5);
     }
+
     .blog-post-title {
         margin-bottom: .25rem;
         font-size: 2.5rem;
     }
+
     .blog-post-meta {
         margin-bottom: 1.25rem;
         color: #727272;
     }
+
     .ui-corner-right {
-        text-align : right;
-    }.star-wrapper {
+        text-align: right;
+    }
+
+    .star-wrapper {
         position: absolute;
         direction: rtl;
     }
+
     .star-wrapper a {
         font-size: 1em;
         color: darkorange;
@@ -94,22 +103,28 @@
         transition: all 0.5s;
         margin: 4px;
     }
+
     .star-wrapper a:hover {
         color: gold;
         transform: scale(1.3);
     }
+
     .s1:hover ~ a {
         color: gold;
     }
+
     .s2:hover ~ a {
         color: gold;
     }
+
     .s3:hover ~ a {
         color: gold;
     }
+
     .s4:hover ~ a {
         color: gold;
     }
+
     .s5:hover ~ a {
         color: gold;
     }

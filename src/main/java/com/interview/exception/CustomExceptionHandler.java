@@ -4,8 +4,8 @@ import com.interview.logger.Audit;
 import io.jsonwebtoken.JwtException;
 import lombok.extern.log4j.Log4j;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -18,76 +18,90 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-@ControllerAdvice
 @Log4j
+@ControllerAdvice
 public class CustomExceptionHandler {
 
     @Audit
+    @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(NotFoundException.class)
-    public ResponseEntity<String> handleException(NotFoundException e) {
+    public String handleException(NotFoundException e, Model model) {
         log.error("was catch error: " + e.getMessage());
         e.printStackTrace();
-        return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+        model.addAttribute("errors", e.getMessage());
+        return "error";
     }
 
     @Audit
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(ValidationException.class)
-    public ResponseEntity<String> handleException(ValidationException e) {
+    public String handleException(ValidationException e, Model model) {
         log.error("was catch error: " + e.getMessage());
         e.printStackTrace();
-        return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        model.addAttribute("errors", e.getMessage());
+        return "error";
     }
 
     @Audit
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
     @ExceptionHandler(AuthenticationException.class)
-    public ResponseEntity<String> handleException(AuthenticationException e) {
+    public String handleException(AuthenticationException e, Model model) {
         log.error("was catch error: " + e.getMessage());
         e.printStackTrace();
-        return new ResponseEntity<>("invalid username/password combination", HttpStatus.UNAUTHORIZED);
+        model.addAttribute("errors", e.getMessage());
+        return "error";
     }
 
     @Audit
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
     @ExceptionHandler(CustomJwtException.class)
-    public ResponseEntity<String> handleException(CustomJwtException e) {
+    public String handleException(CustomJwtException e, Model model) {
         log.error("was catch error: " + e.getMessage());
         e.printStackTrace();
-        return new ResponseEntity<>(e.getMessage(), HttpStatus.UNAUTHORIZED);
+        model.addAttribute("errors", e.getMessage());
+        return "error";
     }
 
     @Audit
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
     @ExceptionHandler(JwtException.class)
-    public ResponseEntity<String> handleException(JwtException e) {
+    public String handleException(JwtException e, Model model) {
         log.error("was catch error: " + e.getMessage());
         e.printStackTrace();
-        return new ResponseEntity<>(e.getMessage(), HttpStatus.UNAUTHORIZED);
+        model.addAttribute("errors", e.getMessage());
+        return "error";
     }
 
     @Audit
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(IllegalArgumentException.class)
-    public ResponseEntity<String> handleException(IllegalArgumentException e) {
+    public String handleException(IllegalArgumentException e, Model model) {
         log.error("was catch error: " + e.getMessage());
         e.printStackTrace();
-        return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        model.addAttribute("errors", e.getMessage());
+        return "error";
     }
 
     @Audit
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(IOException.class)
-    public ResponseEntity<String> handleException(IOException e) {
+    public String handleException(IOException e, Model model) {
         log.error("was catch error: " + e.getMessage());
         e.printStackTrace();
-        return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        model.addAttribute("errors", e.getMessage());
+        return "error";
     }
 
     @Audit
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(ConstraintViolationException.class)
-    public ResponseEntity<Set<String>> handleValidationExceptions(
-            ConstraintViolationException e) {
+    public String handleValidationExceptions(ConstraintViolationException e, Model model) {
         log.error("was catch error: " + e.getMessage());
         Set<String> messages = new HashSet<>(e.getConstraintViolations().size());
         messages.addAll(e.getConstraintViolations().stream()
                 .map(ConstraintViolation::getMessage)
                 .collect(Collectors.toList()));
-        return  new ResponseEntity<>(messages, HttpStatus.BAD_REQUEST);
+        model.addAttribute("errors", messages);
+        return "error";
     }
 }
