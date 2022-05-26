@@ -36,11 +36,10 @@ public class AuditAspect {
         MethodSignature signature = (MethodSignature) joinPoint.getSignature();
         StringBuilder msg = new StringBuilder(OffsetDateTime.now().toString());
         msg.append(" Start method: ");
-        msg.append(signature.getDeclaringTypeName());
+        msg.append(signature.getName());
         msg.append(":");
-        msg.append(signature.getMethod().getName());
         if(joinPoint.getArgs().length > 0) {
-            msg.append(", with param: ").append(Arrays.toString(joinPoint.getArgs()));
+            msg.append(" with param: ").append(Arrays.toString(joinPoint.getArgs()));
         }
         writeToAudit(msg.toString());
     }
@@ -50,11 +49,10 @@ public class AuditAspect {
         MethodSignature signature = (MethodSignature) joinPoint.getSignature();
         StringBuilder msg = new StringBuilder(OffsetDateTime.now().toString());
         msg.append(" End method: ");
-        msg.append(signature.getDeclaringTypeName());
+        msg.append(signature.getName());
         msg.append(":");
-        msg.append(signature.getMethod().getName());
         if (returnValue != null) {
-            msg.append(", return value: ");
+            msg.append(" return value: ");
             msg.append(returnValue);
         }
         writeToAudit(msg.toString());
