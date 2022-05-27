@@ -166,6 +166,7 @@
                 <version>3.4.1</version>
                 <configuration>
                     <propertyFile>src/main/resources/liquibase.properties</propertyFile>
+                    <changeLogFile>${project.basedir}/src/main/resources/liquibase/root-changeLog.xml</changeLogFile>
                 </configuration>
             </plugin>
         </plugins>

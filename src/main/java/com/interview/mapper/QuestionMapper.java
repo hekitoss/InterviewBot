@@ -14,19 +14,19 @@ public class QuestionMapper {
     public QuestionMapper() {
         this.modelMapper = new ModelMapper();
         modelMapper.createTypeMap(Question.class, QuestionDto.class)
-                .addMapping(question -> question.getRate().getAverageRate(), QuestionDto::setRate)
+                .addMapping(Question::getAverageRate, QuestionDto::setRate)
                 .addMapping(question -> question.getOwner().getUsername(), QuestionDto::setUsername)
                 .addMapping(question -> question.getOwner().getId(), QuestionDto::setUserId)
                 .addMapping(Question::getCreationTime, QuestionDto::setDate);
 
         modelMapper.createTypeMap(Question.class, QuestionAndTopCommentDto.class)
-                .addMapping(question -> question.getRate().getAverageRate(), QuestionAndTopCommentDto::setRate)
+                .addMapping(Question::getAverageRate, QuestionAndTopCommentDto::setRate)
                 .addMapping(question -> question.getOwner().getUsername(), QuestionAndTopCommentDto::setUsername)
                 .addMapping(question -> question.getOwner().getId(), QuestionAndTopCommentDto::setUserId)
                 .addMapping(Question::getCreationTime, QuestionAndTopCommentDto::setDate);
 
         modelMapper.createTypeMap(Question.class, QuestionAndAllCommentsDto.class)
-                .addMapping(question -> question.getRate().getAverageRate(), QuestionAndAllCommentsDto::setRate)
+                .addMapping(Question::getAverageRate, QuestionAndAllCommentsDto::setRate)
                 .addMapping(question -> question.getOwner().getUsername(), QuestionAndAllCommentsDto::setUsername)
                 .addMapping(question -> question.getOwner().getId(), QuestionAndAllCommentsDto::setUserId)
                 .addMapping(Question::getCreationTime, QuestionAndAllCommentsDto::setDate);

@@ -23,27 +23,6 @@
         </sql>
     </changeSet>
 
-    <changeSet author="vasil" id="3">
-        <sql>
-            CREATE SEQUENCE IF NOT EXISTS rate_seq START WITH 1000
-        </sql>
-    </changeSet>
-
-    <changeSet author="vasil" id="4">
-        <sql>
-            CREATE TABLE IF NOT EXISTS rate (
-                id BIGINT NOT NULL,
-                number_of_evaluations INT NOT NULL,
-                one INT NOT NULL,
-                two INT NOT NULL,
-                three INT NOT NULL,
-                four INT NOT NULL,
-                five INT NOT NULL,
-                PRIMARY KEY (id)
-                )
-        </sql>
-    </changeSet>
-
     <changeSet author="vasil" id="5">
         <sql>
             CREATE SEQUENCE IF NOT EXISTS question_seq START WITH 1000
@@ -58,12 +37,11 @@
                 question_name VARCHAR(100) NOT NULL,
                 text VARCHAR(1000) NOT NULL,
                 answer VARCHAR(1000) NOT NULL,
-                rate_id BIGINT,
                 creator_id BIGINT,
+                average_rate VARCHAR(5),
                 creation_time TIMESTAMP NOT NULL,
                 deleting_time TIMESTAMP,
                 PRIMARY KEY (id),
-                FOREIGN KEY (rate_id) REFERENCES rate(id),
                 FOREIGN KEY (creator_id) REFERENCES users(id)
                 )
         </sql>

@@ -19,10 +19,12 @@ import javax.validation.Validator;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 @Service
 @Log4j
 public class QuestionService {
+
     private final QuestionRepository questionRepository;
     private final RateRepository rateRepository;
     private final QuestionMapper questionMapper;
@@ -78,28 +80,7 @@ public class QuestionService {
     public QuestionDto save(Question question) {
         log.debug( "save question method for question: " + question);
         validator.validate(question);
-        rateRepository.save(question.getRate());
         return questionMapper.convertToDto(questionRepository.save(question));
-    }
-
-    @Audit
-    public QuestionDto evaluateById(Long id, int rate) throws NotFoundException {
-        log.debug( "evaluate question by id method, with id: " + id);
-        return questionRepository.findById(id).stream()
-                .filter(q -> !q.isDeleted())
-                .peek(question -> {
-                    validator.validate(question.getRate());
-                    User currentUser = authenticationService.getCurrentUser();
-                    if (question.getRate().getUsers().contains(currentUser)) {
-                        throw new IllegalArgumentException("Current user already rated this question");
-                    }
-                    question.getRate().getUsers().add(currentUser);
-                    currentUser.getRates().add(question.getRate());
-                    rateRepository.save(question.getRate().evaluate(rate));
-                })
-                .map(questionMapper::convertToDto)
-                .findFirst()
-                .orElseThrow(() -> new NotFoundException("Not found question with id:" + id));
     }
 
     @Audit
@@ -138,18 +119,45 @@ public class QuestionService {
     }
 
     @Audit
-    public QuestionAndAllCommentsDto rateById(Long id, int rate) throws NotFoundException {
-        log.debug( "rate question by id method, with id: " + id + ", rate: " + rate);
-        return questionRepository.findById(id).stream()
+    public QuestionAndAllCommentsDto rateById(Long questionId, int rateNumber) throws NotFoundException {
+        log.debug( "evaluate question by id method, with id: " + questionId);
+        return questionRepository.findById(questionId).stream()
                 .filter(q -> !q.isDeleted())
-                .map(question -> questionRepository.save(question.setRate(question.getRate().evaluate(rate))))
+                .peek(question -> {
+                    Rate rate = new Rate()
+                            .setRating(rateNumber)
+                            .setQuestion(question)
+                            .setUser(authenticationService.getCurrentUser());
+
+                    validator.validate(rate);
+                    deleteRateByQuestion(question);
+                    rateRepository.save(rate);
+                    updateRating(question);
+                })
                 .map(questionMapper::convertToDtoWithAllComments)
                 .map(questionDto -> questionDto.setCommentsDto(commentService.findAllCommentsByQuestionId(questionDto.getId())))
                 .findFirst()
-                .orElseThrow(() -> new NotFoundException("Not found question with id:" + id));
+                .orElseThrow(() -> new NotFoundException("Not found question with id:" + questionId));
+    }
+
+    private void updateRating(Question question) {
+        question.setAverageRate(rateRepository.findAllByQuestionId(question.getId()).stream()
+                .flatMapToInt(rateFromAll -> IntStream.of(rateFromAll.getRating()))
+                .average().orElseGet(() -> 0.0f));
+
+        questionRepository.save(question);
     }
 
     public QuestionDto create(Question question) {
-        return save(question.setRate(new Rate()).setOwner(authenticationService.getCurrentUser()));
+        return save(question.setOwner(authenticationService.getCurrentUser())
+                .setCreationTime(LocalDateTime.now()));
+    }
+
+    private void deleteRateByQuestion(Question question) {
+        rateRepository.findRateByUserIdAndQuestionId(authenticationService.getCurrentUser().getId(), question.getId())
+                .ifPresent(oldRate -> {
+                    rateRepository.delete(oldRate);
+                    question.getRates().remove(oldRate);
+                });
     }
 }

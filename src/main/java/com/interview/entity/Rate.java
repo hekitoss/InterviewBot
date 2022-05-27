@@ -2,84 +2,50 @@ package com.interview.entity;
 
 import lombok.Getter;
 import lombok.Setter;
-import lombok.SneakyThrows;
 import lombok.experimental.Accessors;
-import org.hibernate.Hibernate;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
-import javax.persistence.SequenceGenerator;
-import javax.xml.bind.ValidationException;
-import java.text.DecimalFormat;
+import javax.persistence.*;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import java.util.Objects;
-import java.util.Set;
 
 @Entity
 @Accessors(chain = true)
 @Getter
 @Setter
 public class Rate {
+
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "rate_seq")
     @SequenceGenerator(name = "rate_seq", allocationSize = 1)
     private Long id;
-    private int one;
-    private int two;
-    private int three;
-    private int four;
-    private int five;
-    private int numberOfEvaluations;
-    @ManyToMany(mappedBy = "rates")
-    private Set<User> users;
 
-    public Rate() {
-        this.one = 0;
-        this.two = 0;
-        this.three = 0;
-        this.four = 0;
-        this.five = 0;
-        this.numberOfEvaluations = 0;
-    }
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
-    public String getAverageRate(){
-        return new DecimalFormat( "#.##" ).format(numberOfEvaluations == 0 ? 0 : (float) (one + two*2 + three*3 + four*4 + five*5) / numberOfEvaluations);
-    }
+    @ManyToOne
+    @JoinColumn(name = "question_id")
+    private Question question;
 
-    @SneakyThrows
-    public Rate evaluate(int rate) {
-        switch (rate) {
-            case 1 -> one++;
-            case 2 -> two++;
-            case 3 -> three++;
-            case 4 -> four++;
-            case 5 -> five++;
-            default -> throw new ValidationException("not correct rating");
-        }
-        numberOfEvaluations++;
-        return this;
-    }
+    @Min(1)
+    @Max(5)
+    private int rating;
 
     @Override
-    public String toString() {
-        return "Rate{" +
-                "id=" + id +
-                ", numberOfEvaluations=" + numberOfEvaluations +
-                '}';
+    public int hashCode() {
+        return getClass().hashCode();
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        Rate rate = (Rate) o;
-        return id != null && Objects.equals(id, rate.id);
+        if (o == null || getClass() != o.getClass()) return false;
+        Rate rate1 = (Rate) o;
+        return rating == rate1.rating && Objects.equals(user, rate1.user) && Objects.equals(question, rate1.question);
     }
 
-    @Override
-    public int hashCode() {
-        return getClass().hashCode();
+    public int getRating() {
+        return rating;
     }
 }

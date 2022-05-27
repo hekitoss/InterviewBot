@@ -6,18 +6,12 @@ import lombok.Setter;
 import lombok.experimental.Accessors;
 import org.hibernate.Hibernate;
 
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
-import javax.persistence.SequenceGenerator;
+import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 import java.util.Objects;
+import java.util.Set;
 
 
 @Entity
@@ -32,23 +26,26 @@ public class Question {
     @SequenceGenerator(name = "question_seq", allocationSize = 1)
     private Long id;
 
-    @OneToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "rate_id")
-    private Rate rate;
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "question")
+    private Set<Rate> rates;
 
     @OneToOne
     @JoinColumn(name = "creator_id")
     private User owner;
 
     @NotBlank
-    @Size(min = 5, max = 100, message = "question name must be between 5 and 10000 characters")
+    @Size(min = 5, max = 100, message = "question name must be between 5 and 100 characters")
     private String questionName;
+
     @NotBlank
     @Size(min = 5, max = 10000, message = "text must be between 5 and 10000 characters")
     private String text;
+
     @NotBlank
     @Size(min = 5, max = 10000, message = "answer must be between 5 and 10000 characters")
     private String answer;
+
+    private double averageRate;
     private boolean isDeleted;
     private LocalDateTime creationTime;
     private LocalDateTime deletingTime;
@@ -58,8 +55,9 @@ public class Question {
         this.text = text;
         this.answer = answer;
         this.questionName = questionName;
-        creationTime = LocalDateTime.now();
+        this.creationTime = LocalDateTime.now();
         this.isDeleted = false;
+        this.averageRate = 0.0;
     }
 
     @Override
